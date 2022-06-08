@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 
 # %% Importation des metadatas des sources
-metadata = pd.read_json('sources/metadata.json')
+metadata = pd.read_json('metadata.json')
 # %%
 
 
@@ -18,7 +18,7 @@ def get_pes():
 def get_aws():
     os.makedirs(f"sources/{metadata['code'][1]}", exist_ok=True)
     for i in range(5):
-        URL = metadata[f"url{2018+i}"][1]
+        URL = metadata["url"][1][i]
         wget.download(URL, f"sources/{metadata['code'][1]}/{metadata['code'][1]}_{2018+i}.xml")
 
 
