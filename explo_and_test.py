@@ -1,7 +1,6 @@
 import pandas as pd
 import wget
 import xmltodict
-from datetime import datetime
 import os
 
 # %% Importation des metadatas des sources
@@ -33,12 +32,9 @@ def get_aws():
 
 
 def convert_pes():
-    start_time = datetime.now()
     with open(f"sources/{metadata['code'][0]}/{metadata['code'][0]}.xml") as fd:
         doc = xmltodict.parse(fd.read())
     df_pes = pd.DataFrame.from_dict(doc['marches']['marche'])
-    end_time = datetime.now()
-    print('Duration: {}'.format(end_time - start_time))
     return df_pes
 
 
@@ -54,6 +50,11 @@ def fix_aws():
     return
 
 
+def merge_all():
+    df_merged = pd.concat(df_to_concat)
+    return df_merged
+
+
 # %% GET
 # %%% GET INIT
 get_init()
@@ -65,9 +66,17 @@ get_aws()
 # %% CONVERT
 # %%% CONVERT PES/AWS
 df_pes = convert_pes()
-df_aws = convert_aws()
+df_aws = convert_pes()
 
 # %% FIX
 # %%% FIX PES/AWS
 fix_pes()
 fix_aws()
+
+# %% MERGE ALL
+# %%%
+df_to_concat = []
+df_to_concat.append(df_pes)
+df_to_concat.append(df_aws)
+# %%%
+merge_all()
