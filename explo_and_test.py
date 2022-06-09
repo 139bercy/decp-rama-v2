@@ -41,7 +41,6 @@ def convert_pes():
 
 
 def convert_aws():
-    start_time = datetime.now()
     n = len(metadata['url'][1])
     li_df_aws = []
     for i in range(n):
@@ -50,8 +49,6 @@ def convert_aws():
             dico = json.load(json_file)
         li_df_aws.append(pd.DataFrame.from_dict(dico['marches']))
     df_aws = pd.concat(li_df_aws)
-    end_time = datetime.now()
-    print('Duration: {}'.format(end_time - start_time))
     return df_aws
 
 
@@ -80,7 +77,7 @@ def fix_aws(df):
 
 
 def merge_all():
-    df_merged = pd.concat(df_to_concat)
+    df_merged = pd.concat(df_to_concat, ignore_index=True)
     return df_merged
 
 
@@ -95,7 +92,7 @@ get_aws()
 # %% CONVERT
 # %%% CONVERT PES/AWS
 df_pes = convert_pes()
-df_aws = convert_pes()
+df_aws = convert_aws()
 
 # %% FIX
 # %%% FIX PES/AWS
@@ -107,5 +104,6 @@ df_aws = fix_aws(df_aws)
 df_to_concat = []
 df_to_concat.append(df_pes)
 df_to_concat.append(df_aws)
+
 # %%%
-merge_all()
+df_merged = merge_all()
