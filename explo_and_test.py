@@ -5,7 +5,6 @@ import os
 import json
 from dict2xml import dict2xml
 
-
 # %% Importation des metadatas des sources
 metadata = pd.read_json('metadata.json')
 # %%
@@ -72,6 +71,7 @@ def fix_pes(df):
 
 
 def fix_aws(df):
+    # Ajout de la source
     df = df.assign(source=f"{metadata['code'][1]}")
     df['dureeMois'] = df['dureeMois'].astype(str)
     df['montant'] = df['montant'].astype(str)
@@ -84,17 +84,19 @@ def merge_all():
 
 
 def merged_to_dico(df):
-    dico = [{'marché':{k: v for k, v in m.items() if str(v) != 'nan'}} for m in df.to_dict(orient='records')]
+    # Pour enlever les valeurs nulles
+    dico = [{'marché': {k: v for k, v in m.items()
+                        if str(v) != 'nan'}} for m in df.to_dict(orient='records')]
     return {'marchés': dico}
 
 
 def export_to_json(dico):
-    with open('decp.json', 'w') as f:
+    with open("results/decp.json", 'w') as f:
         json.dump(dico, f, indent=2, ensure_ascii=False)
 
 
 def export_to_xml(dico):
-    with open('decp.xml', 'w') as f:
+    with open("results/decp.xml", 'w') as f:
         f.write(dict2xml(dico))
 
 
@@ -107,7 +109,7 @@ get_pes()
 get_aws()
 
 # %% CONVERT
-# %%% CONVERT PES/AWS
+# %%% CONVERT PES/AWS TO DF
 df_pes = convert_pes()
 df_aws = convert_aws()
 
@@ -125,10 +127,9 @@ df_to_concat.append(df_aws)
 # %%%
 df_merged = merge_all()
 
-
-# %% CONVERT MERGED TO DICO sans les nan
+# %% CONVERT MERGED TO DICO
 dico = merged_to_dico(df_merged)
 
-# %%% CONVERT PES/AWS
-#export_to_json(dico)
+# %%% CONVERT DICO TO XML, JSON
+export_to_json(dico)
 export_to_xml(dico)
