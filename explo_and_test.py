@@ -83,19 +83,16 @@ def merge_all():
     return df_merged
 
 
-def merged_to_dico(df):
-    # Pour enlever les valeurs nulles
-    dico = [{'marché': {k: v for k, v in m.items()
-                        if str(v) != 'nan'}} for m in df.to_dict(orient='records')]
-    return {'marchés': dico}
-
-
-def export_to_json(dico):
+def export_to_json(df):
+    dico = {'marches': [{k: v for k, v in m.items()
+                        if str(v) != 'nan'} for m in df.to_dict(orient='records')]}
     with open("results/decp.json", 'w') as f:
         json.dump(dico, f, indent=2, ensure_ascii=False)
 
 
-def export_to_xml(dico):
+def export_to_xml(df):
+    dico = {'marches': [{'marche': {k: v for k, v in m.items()
+                        if str(v) != 'nan'}} for m in df.to_dict(orient='records')]}
     with open("results/decp.xml", 'w') as f:
         f.write(dict2xml(dico))
 
@@ -128,9 +125,5 @@ df_to_concat.append(df_aws)
 df_merged = merge_all()
 
 # %% 7- RESULTS Conversion du dataframe final en xml et json
-# On passe le df en dictionnaire afin de procéder à l'exportation en format json et xml
-dico = merged_to_dico(df_merged)
-
-# %%% 8- CONVERT DICO TO XML, JSON
-export_to_json(dico)
-export_to_xml(dico)
+export_to_json(df_merged)
+export_to_xml(df_merged)
