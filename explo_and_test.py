@@ -3,6 +3,8 @@ import wget
 import xmltodict
 import os
 import json
+from dict2xml import dict2xml
+
 
 # %% Importation des metadatas des sources
 metadata = pd.read_json('metadata.json')
@@ -59,11 +61,11 @@ def fix_pes(df):
     df['acheteur'] = df['acheteur'].apply(lambda x: json.loads(json.dumps(x)))
     df['lieuExecution'] = df['lieuExecution'].apply(lambda x: json.loads(json.dumps(x)))
     df['titulaires'] = df['titulaires'].apply(
-        lambda x: json.loads(json.dumps(x))['titulaire'])
+        lambda x: json.loads(json.dumps(x)))
     df['titulaires'] = df['titulaires'].apply(
         lambda x: x if x is None or type(x) == list else [x])
     df['modifications'] = df['modifications'].apply(
-        lambda x: x if x is None else json.loads(json.dumps(x))['modification'])
+        lambda x: x if x is None else json.loads(json.dumps(x)))
     df['modifications'] = df['modifications'].apply(
         lambda x: x if type(x) == list else [] if x is None else [x])
     return df
@@ -79,6 +81,21 @@ def fix_aws(df):
 def merge_all():
     df_merged = pd.concat(df_to_concat, ignore_index=True)
     return df_merged
+
+
+def merged_to_dico(df):
+    dico = [{'marché':{k: v for k, v in m.items() if str(v) != 'nan'}} for m in df.to_dict(orient='records')]
+    return {'marchés': dico}
+
+
+def export_to_json(dico):
+    with open('decp.json', 'w') as f:
+        json.dump(dico, f, indent=2, ensure_ascii=False)
+
+
+def export_to_xml(dico):
+    with open('decp.xml', 'w') as f:
+        f.write(dict2xml(dico))
 
 
 # %% GET
@@ -107,3 +124,11 @@ df_to_concat.append(df_aws)
 
 # %%%
 df_merged = merge_all()
+
+
+# %% CONVERT MERGED TO DICO sans les nan
+dico = merged_to_dico(df_merged)
+
+# %%% CONVERT PES/AWS
+#export_to_json(dico)
+export_to_xml(dico)
