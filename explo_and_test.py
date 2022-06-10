@@ -131,6 +131,6 @@ df_merged = merge_all()
 # On passe le df en dictionnaire afin de procéder à l'exportation en format json et xml
 dico = merged_to_dico(df_merged)
 
-# %%% CONVERT DICO TO XML, JSON
+# %%% 8- CONVERT DICO TO XML, JSON
 export_to_json(dico)
 export_to_xml(dico)
