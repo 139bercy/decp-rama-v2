@@ -5,9 +5,9 @@ import os
 import json
 from dict2xml import dict2xml
 
-# %% Importation des metadatas des sources
+# %% 1- Importation des metadatas des sources
 metadata = pd.read_json('metadata.json')
-# %%
+# %% 2- Définitions des fonctions
 
 
 def get_init():
@@ -100,7 +100,7 @@ def export_to_xml(dico):
         f.write(dict2xml(dico))
 
 
-# %% GET
+# %% 3- GET téléchargement des sources
 # %%% GET INIT
 get_init()
 
@@ -108,17 +108,17 @@ get_init()
 get_pes()
 get_aws()
 
-# %% CONVERT
+# %% 4- CONVERT conversion des sources en dataframe
 # %%% CONVERT PES/AWS TO DF
 df_pes = convert_pes()
 df_aws = convert_aws()
 
-# %% FIX
+# %% 5- FIX nettoyage minimal et ajout de la source
 # %%% FIX PES/AWS
 df_pes = fix_pes(df_pes)
 df_aws = fix_aws(df_aws)
 
-# %% MERGE ALL
+# %% 6- MERGE ALL concaténation des sources en un seul dataframe
 # %%%
 df_to_concat = []
 df_to_concat.append(df_pes)
@@ -127,7 +127,8 @@ df_to_concat.append(df_aws)
 # %%%
 df_merged = merge_all()
 
-# %% CONVERT MERGED TO DICO
+# %% 7- RESULTS Conversion du dataframe final en xml et json
+# On passe le df en dictionnaire afin de procéder à l'exportation en format json et xml
 dico = merged_to_dico(df_merged)
 
 # %%% CONVERT DICO TO XML, JSON
