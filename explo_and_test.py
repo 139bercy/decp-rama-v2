@@ -67,6 +67,8 @@ def fix_pes(df):
         lambda x: x if x is None else json.loads(json.dumps(x)))
     df['modifications'] = df['modifications'].apply(
         lambda x: x if type(x) == list else [] if x is None else [x])
+    # Supression des doublons
+    df = df_drop_duplicates(df)
     return df
 
 
@@ -79,6 +81,8 @@ def fix_aws(df):
         lambda x: [{'titulaire': y} for y in x] if str(x) != 'nan' else x)
     df['modifications'] = df['modifications'].apply(
         lambda x: [{'modification': y} for y in x] if str(x) != 'nan' else x)
+    # Supression des doublons
+    df = df_drop_duplicates(df)
     return df
 
 
@@ -99,6 +103,12 @@ def export_to_xml(df):
                         if str(v) != 'nan'}} for m in df.to_dict(orient='records')]}
     with open("results/decp.xml", 'w') as f:
         f.write(dict2xml(dico))
+
+
+def df_drop_duplicates(df):
+    index_to_keep = df.astype('string').drop_duplicates().index.tolist()
+    df = df.iloc[index_to_keep, :]
+    return df
 
 
 # %% 3- GET téléchargement des sources
