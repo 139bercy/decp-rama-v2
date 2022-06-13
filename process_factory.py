@@ -1,11 +1,14 @@
-from sources_class import ProcessPesMarches, ProcessAWS
+import sys
+sys.path.append("process")
+from PesMarchesProcess import PesMarchesProcess
+from AWSProcess import AWSProcess
 
 
 class ProcessFactory:
 
     def __init__(self):
-        self.processes = [ProcessPesMarches, ProcessAWS]
-        self.li_df = []
+        self.processes = [PesMarchesProcess, AWSProcess]
+        self.dataframes = []
 
     def getProcess(self):
         for process in self.processes:
@@ -13,4 +16,4 @@ class ProcessFactory:
             # p.get()
             p.convert()
             p.fix()
-            self.li_df.append(p.df)
+            self.dataframes.append(p.df)
