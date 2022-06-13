@@ -75,6 +75,10 @@ def fix_aws(df):
     df = df.assign(source=f"{metadata['code'][1]}")
     df['dureeMois'] = df['dureeMois'].astype(str)
     df['montant'] = df['montant'].astype(str)
+    df['titulaires'] = df['titulaires'].apply(
+        lambda x: [{'titulaire': y} for y in x] if str(x) != 'nan' else x)
+    df['modifications'] = df['modifications'].apply(
+        lambda x: [{'modification': y} for y in x] if str(x) != 'nan' else x)
     return df
 
 
