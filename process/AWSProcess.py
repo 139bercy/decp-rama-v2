@@ -21,9 +21,6 @@ class AWSProcess(SourceProcess):
         super().convert()
 
     def fix(self):
-        super().fix()
-        # self.df['dureeMois'] = self.df['dureeMois'].astype(str)
-        # self.df['montant'] = self.df['montant'].astype(str)
         # On se ramène au format souhaité pour titulaires, modifications et concessionnaires
         self.df['titulaires'] = self.df['titulaires'].apply(
             lambda x: [{'titulaire': y} for y in x] if str(x) != 'nan' else x)
@@ -31,5 +28,5 @@ class AWSProcess(SourceProcess):
             lambda x: [{'modification': y} for y in x] if str(x) != 'nan' else x)
         self.df['concessionnaires'] = self.df['concessionnaires'].apply(
             lambda x: [{'concessionnaire': y} for y in x] if str(x) != 'nan' else x)
-        # Supression des doublons
-        # df = df_drop_duplicates(df)
+        # Supression des doublons et ajout de source
+        super().fix()

@@ -21,6 +21,7 @@ class SourceProcess:
                     df = pd.DataFrame.from_dict(dico['marches']['marche'])
                 li.append(df)
             df = pd.concat(li)
+            df = df.reset_index(drop=True)
             self.df = df
         elif self.format == 'json':
             li = []
@@ -30,7 +31,14 @@ class SourceProcess:
                     dico = json.load(json_file)
                 li.append(pd.DataFrame.from_dict(dico['marches']))
             df = pd.concat(li)
+            df = df.reset_index(drop=True)
             self.df = df
 
     def fix(self):
+        # Ajout de source
         self.df = self.df.assign(source=self.source)
+        # Suppression des doublons
+        df_str = self.df.astype(str)
+        index_to_keep = df_str.drop_duplicates().index.tolist()
+        self.df = self.df.iloc[index_to_keep]
+        self.df = self.df.reset_index(drop=True)
