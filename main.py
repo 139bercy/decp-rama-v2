@@ -1,7 +1,8 @@
 # %%
+import sys
+sys.path.append("general_process")
 from process_factory import ProcessFactory
 from global_process import GlobalProcess
-
 
 
 # %%
