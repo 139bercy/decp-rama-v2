@@ -6,6 +6,7 @@ import json
 class GlobalProcess:
     def merge_all(self):
         self.df = pd.concat(self.dataframes, ignore_index=True)
+        self.df = self.df.reset_index(drop=True)
 
     def drop_duplicate(self):
         pass
