@@ -1,4 +1,4 @@
-from source_process import SourceProcess
+from general_process.source_process import SourceProcess
 import json
 
 
