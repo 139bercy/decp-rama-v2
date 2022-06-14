@@ -1,13 +1,13 @@
 import sys
 sys.path.append("specific_process")
-from PesMarchesProcess import PesMarchesProcess
-from AWSProcess import AWSProcess
-
+from PesProcess import PesProcess
+from AwsProcess import AwsProcess
+from LyonProcess import LyonProcess
 
 class ProcessFactory:
 
     def __init__(self):
-        self.processes = [PesMarchesProcess, AWSProcess]
+        self.processes = [PesProcess, AwsProcess, LyonProcess]
         self.dataframes = []
 
     def getProcess(self):
