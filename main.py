@@ -1,7 +1,5 @@
-import sys
-sys.path.append("general_process")
-from process_factory import ProcessFactory
-from global_process import GlobalProcess
+from general_process.process_factory import ProcessFactory
+from general_process.global_process import GlobalProcess
 
 
 def main():

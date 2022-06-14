@@ -1,10 +1,6 @@
-import sys
-
 import pandas as pd
-
-sys.path.append("specific_process")
-from PesProcess import PesProcess
-from AwsProcess import AwsProcess
+from specific_process.PesProcess import PesProcess
+from specific_process.AwsProcess import AwsProcess
 
 
 class ProcessFactory:
