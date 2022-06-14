@@ -1,9 +1,9 @@
 from source_process import SourceProcess
 
 
-class LyonProcess(SourceProcess):
+class BfcProcess(SourceProcess):
     def __init__(self):
-        self.id = 4
+        self.id = 6
         super().__init__()
 
     def get(self):
