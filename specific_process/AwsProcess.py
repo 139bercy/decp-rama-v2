@@ -1,7 +1,7 @@
 from source_process import SourceProcess
 
 
-class AWSProcess(SourceProcess):
+class AwsProcess(SourceProcess):
     def __init__(self):
         self.id = 1
         super().__init__()
