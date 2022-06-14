@@ -2,7 +2,7 @@ from source_process import SourceProcess
 import json
 
 
-class PesMarchesProcess(SourceProcess):
+class PesProcess(SourceProcess):
     def __init__(self):
         self.id = 0
         super().__init__()
