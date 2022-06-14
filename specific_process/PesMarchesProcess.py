@@ -4,11 +4,8 @@ import json
 
 class PesMarchesProcess(SourceProcess):
     def __init__(self):
-        self.url = ["https://files.data.gouv.fr/decp/dgfip-pes-decp.xml"]
-        self.file_name = ["data.gouv.fr_pes"]
-        self.source = "data.gouv.fr_pes"
-        self.format = "xml"
-        self.df = []
+        self.id = 0
+        super().__init__()
 
     def get(self):
         super().get()
@@ -30,5 +27,3 @@ class PesMarchesProcess(SourceProcess):
             lambda x: x if x is None else json.loads(json.dumps(x)))
         self.df['modifications'] = self.df['modifications'].apply(
             lambda x: x if type(x) == list else [] if x is None else [x])
-        # Supression des doublons
-        # self.df = self.df_drop_duplicates(self.df)

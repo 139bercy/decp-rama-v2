@@ -6,6 +6,14 @@ import xmltodict
 
 
 class SourceProcess:
+    def __init__(self):
+        self.metadata = pd.read_json('metadata.json')
+        self.url = self.metadata["url"][self.id]
+        self.file_name = [f"{self.metadata['code'][self.id]}_{i}" for i in range(len(self.url))]
+        self.source = self.metadata["code"][self.id]
+        self.format = self.metadata["format"][self.id]
+        self.df = pd.DataFrame()
+
     def get(self):
         os.makedirs(f"sources/{self.source}", exist_ok=True)
         for i in range(len(self.url)):
