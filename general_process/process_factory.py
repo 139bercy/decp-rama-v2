@@ -7,7 +7,7 @@ class ProcessFactory:
 
     def __init__(self):
         self.processes = [PesProcess, AwsProcess]
-        self.dataframes = pd.DataFrame()
+        self.dataframes = []
 
     def getProcess(self):
         for process in self.processes:
