@@ -1,11 +1,9 @@
-# %%
 import sys
 sys.path.append("general_process")
 from process_factory import ProcessFactory
 from global_process import GlobalProcess
 
 
-# %%
 def main():
     if __name__ == "__main__":
         p = ProcessFactory()
@@ -18,5 +16,4 @@ def main():
         gp.export_to_json()
 
 
-# %%
 main()
