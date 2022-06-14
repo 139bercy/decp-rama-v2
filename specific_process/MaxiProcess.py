@@ -1,9 +1,9 @@
 from source_process import SourceProcess
 
 
-class LyonProcess(SourceProcess):
+class MaxiProcess(SourceProcess):
     def __init__(self):
-        self.id = 4
+        self.id = 5
         super().__init__()
 
     def get(self):

@@ -1,9 +1,9 @@
 from source_process import SourceProcess
 
 
-class LyonProcess(SourceProcess):
+class MegaProcess(SourceProcess):
     def __init__(self):
-        self.id = 4
+        self.id = 7
         super().__init__()
 
     def get(self):

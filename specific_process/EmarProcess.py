@@ -1,7 +1,7 @@
 from source_process import SourceProcess
 
 
-class LyonProcess(SourceProcess):
+class EmarProcess(SourceProcess):
     def __init__(self):
         self.id = 3
         super().__init__()
