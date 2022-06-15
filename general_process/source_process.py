@@ -15,11 +15,15 @@ class SourceProcess:
         self.df = pd.DataFrame()
 
     def get(self):
+        print("\n",
+              f"Début du téléchargement de {len(self.url)} fichier(s) pour la source {self.source}")
         os.makedirs(f"sources/{self.source}", exist_ok=True)
         for i in range(len(self.url)):
+            print("\n", f"{i+1}/{len(self.url)} : {self.file_name[i]}")
             wget.download(self.url[i], f"sources/{self.source}/{self.file_name[i]}.{self.format}")
 
     def convert(self):
+        print("\n", f"Début de convert: mise au format DataFrame de {self.source}")
         if self.format == 'xml':
             li = []
             for i in range(len(self.url)):
@@ -41,8 +45,11 @@ class SourceProcess:
             df = pd.concat(li)
             df = df.reset_index(drop=True)
             self.df = df
+        print(f"Conversion de {self.source} OK")
 
     def fix(self):
+        print("\n", "Début de fix : Ajout de la colonne source et supression des duplicats de" +
+              f"{self.source}")
         # Ajout de source
         self.df = self.df.assign(source=self.source)
         # Suppression des doublons
@@ -50,3 +57,4 @@ class SourceProcess:
         index_to_keep = df_str.drop_duplicates().index.tolist()
         self.df = self.df.iloc[index_to_keep]
         self.df = self.df.reset_index(drop=True)
+        print(f"Fix de {self.source} OK")
