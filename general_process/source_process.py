@@ -45,7 +45,7 @@ class SourceProcess:
             df = pd.concat(li)
             df = df.reset_index(drop=True)
             self.df = df
-        print(f"Conversion de {self.source} OK")
+        print("\n", f"Conversion de {self.source} OK")
 
     def fix(self):
         print("\n", "Début de fix : Ajout de la colonne source et supression des duplicats de" +
@@ -57,4 +57,4 @@ class SourceProcess:
         index_to_keep = df_str.drop_duplicates().index.tolist()
         self.df = self.df.iloc[index_to_keep]
         self.df = self.df.reset_index(drop=True)
-        print(f"Fix de {self.source} OK")
+        print("\n", f"Fix de {self.source} OK")
