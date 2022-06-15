@@ -1,11 +1,22 @@
 import pandas as pd
 from dict2xml import dict2xml
 import json
+import os
 
 
 class GlobalProcess:
     def __init__(self):
         self.df = pd.DataFrame()
+
+    def get_init(self):
+        print("\n", "Supression des sources existantes")
+        for root, dirs, files in os.walk("sources/", topdown=False):
+            for name in files:
+                if name != '.gitignore':
+                    os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+        print("\n", "Supression des sources OK")
 
     def merge_all(self):
         print("\n", "Début de l'étape Merge des Dataframes")
