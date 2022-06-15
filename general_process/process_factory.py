@@ -1,4 +1,3 @@
-import pandas as pd
 from specific_process.PesProcess import PesProcess
 from specific_process.AwsProcess import AwsProcess
 
