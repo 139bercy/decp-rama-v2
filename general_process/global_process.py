@@ -2,6 +2,7 @@ import pandas as pd
 from dict2xml import dict2xml
 import json
 import os
+from datetime import date
 
 
 class GlobalProcess:
@@ -24,10 +25,24 @@ class GlobalProcess:
         self.df = self.df.reset_index(drop=True)
         print("\n", "Merge OK")
 
+    def fix_all(self):
+        date_columns = ['dateNotification', 'datePublicationDonnees', 'dateTransmissionDonneesEtalab',
+                        'dateDebutExecution']
+        for s in date_columns:
+            self.df[s] = self.df[s].apply(str)
+            self.df[s] = self.df[s].apply(lambda x:
+                                          x.replace('+', '-') if str(x) != 'nan' else x)
+            self.df[s] = \
+                self.df[s].apply(lambda x:
+                                 date(int(float(x.split("-")[0])), int(float(x.split("-")[1])),
+                                      int(float(x.split("-")[2]))).isoformat()
+                                 if str(x) != 'nan' and len(x.split("-")) >= 3 else x)
+
     def drop_duplicate(self):
         # Suppression des doublons
         print("\n", "Début de l'étape Supression des doublons")
         df_str = self.df.astype(str)
+        df_str = df_str.drop(["source"], axis=1)
         index_to_keep = df_str.drop_duplicates().index.tolist()
         self.df = self.df.iloc[index_to_keep]
         self.df = self.df.reset_index(drop=True)
