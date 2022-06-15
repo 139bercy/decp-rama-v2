@@ -3,6 +3,7 @@ import os
 import json
 import pandas as pd
 import xmltodict
+import re
 
 
 class SourceProcess:
@@ -23,6 +24,14 @@ class SourceProcess:
             wget.download(self.url[i], f"sources/{self.source}/{self.file_name[i]}.{self.format}")
 
     def convert(self):
+        # suppression des '
+        for i in range(len(self.url)):
+            with open(
+                    f"sources/{self.source}/{self.file_name[i]}.{self.format}") as file:
+                str = re.sub("\'", " ", file.read())
+            with open(
+                    f"sources/{self.source}/{self.file_name[i]}.{self.format}", "w") as file:
+                file.write(str)
         print("\n", f"Début de convert: mise au format DataFrame de {self.source}")
         if self.format == 'xml':
             li = []
@@ -48,7 +57,7 @@ class SourceProcess:
         print("\n", f"Conversion de {self.source} OK")
 
     def fix(self):
-        print("\n", "Début de fix : Ajout de la colonne source et supression des duplicats de" +
+        print("\n", "Début de fix : Ajout de la colonne source et supression des duplicats de " +
               f"{self.source}")
         # Ajout de source
         self.df = self.df.assign(source=self.source)
