@@ -5,8 +5,9 @@ from general_process.global_process import GlobalProcess
 def main():
     if __name__ == "__main__":
         p = ProcessFactory()
-        p.getProcess()
         gp = GlobalProcess()
+        gp.get_init()
+        p.getProcess()
         gp.dataframes = p.dataframes
         gp.merge_all()
         gp.drop_duplicate()
