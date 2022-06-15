@@ -7,12 +7,6 @@ class PesProcess(SourceProcess):
         self.id = 0
         super().__init__()
 
-    def get(self):
-        super().get()
-
-    def convert(self):
-        super().convert()
-
     def fix(self):
         super().fix()
         # On enlève les OrderedDict et on se ramène au format souhaité
