@@ -59,7 +59,7 @@ class SourceProcess:
         logging.info(f"Nombre de marchés dans {self.source} après convert : {len(self.df)}")
 
     def fix(self):
-        logging.info("Début de fix : Ajout de la colonne source et suppression des duplicatas de {self.source}")
+        logging.info(f"Début de fix : Ajout de la colonne source et suppression des duplicatas de {self.source}")
         # Ajout de source
         self.df = self.df.assign(source=self.source)
         # Suppression des doublons
