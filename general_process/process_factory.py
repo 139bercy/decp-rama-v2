@@ -9,7 +9,7 @@ class ProcessFactory:
         self.processes = [PesProcess, AwsProcess, LyonProcess]
         self.dataframes = []
 
-    def getProcess(self):
+    def getprocess(self):
         for process in self.processes:
             p = process()
             p.get()

@@ -3,8 +3,7 @@ from general_process.source_process import SourceProcess
 
 class AwsProcess(SourceProcess):
     def __init__(self):
-        self.id = 1
-        super().__init__()
+        super().__init__(1)
 
     def fix(self):
         super().fix()

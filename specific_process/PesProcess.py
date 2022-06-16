@@ -4,8 +4,7 @@ import json
 
 class PesProcess(SourceProcess):
     def __init__(self):
-        self.id = 0
-        super().__init__()
+        super().__init__(0)
 
     def fix(self):
         super().fix()
