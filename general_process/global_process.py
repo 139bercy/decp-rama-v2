@@ -48,6 +48,8 @@ class GlobalProcess:
         # Suppression des doublons
         logging.info("Début de l'étape Suppression des doublons")
         df_str = self.df.astype(str)
+        for c in df_str.columns:
+            df_str[c] = df_str[c].str.replace(' ', '')
         df_str = df_str.drop(["source"], axis=1)
         index_to_keep = df_str.drop_duplicates().index.tolist()
         self.df = self.df.iloc[index_to_keep]
