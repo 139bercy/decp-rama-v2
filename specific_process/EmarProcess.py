@@ -3,8 +3,7 @@ from general_process.source_process import SourceProcess
 
 class EmarProcess(SourceProcess):
     def __init__(self):
-        self.id = 3
-        super().__init__()
+        super().__init__(3)
 
     def get(self):
         super().get()

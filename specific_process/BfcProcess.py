@@ -1,10 +1,9 @@
 from general_process.source_process import SourceProcess
-
+from datetime import date
 
 class BfcProcess(SourceProcess):
     def __init__(self):
-        self.id = 6
-        super().__init__()
+        super().__init__(6)
 
     def get(self):
         super().get()

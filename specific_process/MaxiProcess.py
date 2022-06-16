@@ -3,8 +3,7 @@ from general_process.source_process import SourceProcess
 
 class MaxiProcess(SourceProcess):
     def __init__(self):
-        self.id = 5
-        super().__init__()
+        super().__init__(5)
 
     def get(self):
         super().get()
