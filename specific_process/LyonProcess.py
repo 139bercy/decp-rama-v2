@@ -1,6 +1,7 @@
 from general_process.source_process import SourceProcess
 import json
 
+
 class LyonProcess(SourceProcess):
     def __init__(self):
         super().__init__(4)
@@ -28,4 +29,3 @@ class LyonProcess(SourceProcess):
         # On remplace datePublicationDonnees par la première (la plus récente)
         self.df['datePublicationDonnees'] = self.df['datePublicationDonnees'].apply(
             lambda x: x[0])
-

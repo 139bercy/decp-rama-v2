@@ -3,7 +3,6 @@ from general_process.global_process import GlobalProcess
 import logging
 
 
-
 def main():
     if __name__ == "__main__":
         p = ProcessFactory()
