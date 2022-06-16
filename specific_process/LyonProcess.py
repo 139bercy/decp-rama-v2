@@ -27,6 +27,6 @@ class LyonProcess(SourceProcess):
         self.df['modifications'] = self.df['modifications'].apply(
             lambda x: x if type(x) == list else [] if x is None else [x])
         # On remplace datePublicationDonnees par la première (la plus récente)
-        self.df['DatePublicationDonnees'] = self.df['DatePublicationDonnees'].apply(
+        self.df['datePublicationDonnees'] = self.df['datePublicationDonnees'].apply(
             lambda x: x[0])
 
