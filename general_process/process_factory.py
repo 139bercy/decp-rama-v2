@@ -1,12 +1,13 @@
 from specific_process.PesProcess import PesProcess
 from specific_process.AwsProcess import AwsProcess
 from specific_process.LyonProcess import LyonProcess
+from specific_process.BfcProcess import BfcProcess
 
 
 class ProcessFactory:
 
     def __init__(self):
-        self.processes = [PesProcess, AwsProcess, LyonProcess]
+        self.processes = [BfcProcess]
         self.dataframes = []
 
     def getprocess(self):
