@@ -10,9 +10,20 @@ class AwsProcess(SourceProcess):
         # self.df['dureeMois'] = self.df['dureeMois'].astype(str)
         # self.df['montant'] = self.df['montant'].astype(str)
         # On se ramène au format souhaité pour titulaires, modifications et concessionnaires
-        self.df['titulaires'] = self.df['titulaires'].apply(
-            lambda x: [{'titulaire': y} for y in x] if str(x) != 'nan' else x)
-        self.df['modifications'] = self.df['modifications'].apply(
-            lambda x: [{'modification': y} for y in x] if str(x) != 'nan' else x)
-        self.df['concessionnaires'] = self.df['concessionnaires'].apply(
-            lambda x: [{'concessionnaire': y} for y in x] if str(x) != 'nan' else x)
+        self.df['modifications'] = [x if str(x) == 'nan' or str(x) == '[]' else ([{'modification':[y for y in x]}] if len(x)>1 else [{'modification':x[0]}]) for x in self.df['modifications']]
+        self.df['titulaires'] = [x if str(x) == 'nan' or str(x) == '[]' else ([{'titulaire':[y for y in x]}] if len(x)>1 else [{'titulaire':x[0]}]) for x in self.df['titulaires']]
+        # cette étape permet de gérer les différences de formats entre XML et Json convertis en dataframe
+        for x in self.df['modifications']:
+            if len(x) > 0:
+                y = x[0]['modification']
+                if type(y) is list:
+                    for i in range(len(y)):
+                        if 'titulaires' in x[0]['modification'][i]:
+                            z = x[0]['modification'][i]['titulaires']
+                            x[0]['modification'][i]['titulaires'] = (dict({'titulaire': [y for y in z]}) if len(z) > 1 else
+                                {'titulaire': z[0]})
+                else:
+                    if 'titulaires' in x[0]['modification']:
+                        z = x[0]['modification']['titulaires']
+                        x[0]['modification']['titulaires'] = (dict({'titulaire': [y for y in z]}) if len(z) > 1 else
+                            {'titulaire': z[0]})
