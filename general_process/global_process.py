@@ -11,16 +11,6 @@ class GlobalProcess:
         self.df = pd.DataFrame()
         self.dataframes = []
 
-    def get_init(self):
-        logging.info("Supression des sources existantes")
-        for root, dirs, files in os.walk("sources/", topdown=False):
-            for name in files:
-                if name != '.gitignore':
-                    os.remove(os.path.join(root, name))
-            for name in dirs:
-                os.rmdir(os.path.join(root, name))
-        logging.info("Supression des sources OK")
-
     def merge_all(self):
         logging.info("Début de l'étape Merge des Dataframes")
         self.df = pd.concat(self.dataframes, ignore_index=True)

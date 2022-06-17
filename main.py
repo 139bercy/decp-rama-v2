@@ -1,13 +1,16 @@
 from general_process.process_factory import ProcessFactory
 from general_process.global_process import GlobalProcess
+from general_process.init import Init
 import logging
 
 
 def main():
     if __name__ == "__main__":
+        i = Init()
+        i.get_init()
+        i.get_urls()
         p = ProcessFactory()
         gp = GlobalProcess()
-        gp.get_init()
         p.getprocess()
         gp.dataframes = p.dataframes
         gp.merge_all()
