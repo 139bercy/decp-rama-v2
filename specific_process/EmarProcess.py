@@ -9,7 +9,7 @@ class EmarProcess(SourceProcess):
         super().get()
 
     def convert(self):
-        super().convert()
+        pass
 
     def fix(self):
         pass
