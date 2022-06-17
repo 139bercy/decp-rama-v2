@@ -9,7 +9,7 @@ from specific_process.MegaProcess import MegaProcess
 class ProcessFactory:
 
     def __init__(self):
-        self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, BfcProcess]
+        self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, BfcProcess, MegaProcess]
         self.dataframes = []
 
     def getprocess(self):
