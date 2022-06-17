@@ -8,8 +8,7 @@ from specific_process.EmarProcess import EmarProcess
 class ProcessFactory:
 
     def __init__(self):
-        # self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, BfcProcess]
-        self.processes = [EmarProcess]
+        self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, BfcProcess]
         self.dataframes = []
 
     def getprocess(self):
