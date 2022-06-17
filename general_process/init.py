@@ -3,6 +3,7 @@ import logging
 import json
 from datetime import date
 from dateutil.relativedelta import relativedelta
+import wget
 
 
 class Init:
@@ -16,6 +17,12 @@ class Init:
         for root, dirs, files in os.walk("sources/", topdown=False):
             for name in files:
                 if name != '.gitignore':
+                    os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+        for root, dirs, files in os.walk("metadata/", topdown=False):
+            for name in files:
+                if name != 'metadata_source.json' and name != '.gitignore':
                     os.remove(os.path.join(root, name))
             for name in dirs:
                 os.rmdir(os.path.join(root, name))
@@ -41,6 +48,21 @@ class Init:
         logging.info("Récupération des urls OK")
         # LYON
         self.metadata[4]["url"] = [self.metadata[4]["url_source"]]
+
+        # AIFE
+        os.makedirs("metadata/data.gouv.fr_aife", exist_ok=True)
+        datasets = ["5bd789ee8b4c4155bd9a0770", "5c3d0d6b8b4c41333775f45a",
+                    "5cc8be59634f412a53e309e8", "5df410e86f44413a91d34be3"]
+        url = []
+        for i in range(len(datasets)):
+            wget.download(f"https://www.data.gouv.fr/api/1/datasets/{datasets[i]}/",
+                          f"metadata/data.gouv.fr_aife/meta_aife_{i}.json")
+            with open(f"metadata/data.gouv.fr_aife/meta_aife_{i}.json", 'r+') as f:
+                ref_json = json.load(f)
+            a = ref_json["resources"]
+            url = url + [d["url"] for d in a]
+        self.metadata[2]["url"] = url
+
         # Export metadata.json
         with open('metadata/metadata.json', 'w') as f:
             json.dump(self.metadata, f, indent=2, ensure_ascii=False)
