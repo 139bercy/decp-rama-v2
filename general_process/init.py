@@ -63,6 +63,16 @@ class Init:
             url = url + [d["url"] for d in a]
         self.metadata[2]["url"] = url
 
+        # EMAR
+        os.makedirs("metadata/e-marchespublics", exist_ok=True)
+        wget.download("https://www.data.gouv.fr/api/1/datasets/5c0a7845634f4139b2ee8883/",
+                      "metadata/e-marchespublics/e-marchespublics_0.json")
+        with open(f"metadata/e-marchespublics/e-marchespublics_0.json", 'r+') as f:
+            ref_json = json.load(f)
+        a = ref_json["resources"]
+        url = [d["url"] for d in a]
+        self.metadata[3]["url"] = url
+
         # Export metadata.json
         with open('metadata/metadata.json', 'w') as f:
             json.dump(self.metadata, f, indent=2, ensure_ascii=False)
