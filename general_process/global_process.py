@@ -20,7 +20,17 @@ class GlobalProcess:
 
     def fix_all(self):
         logging.info("Début de l'étape Fix_all du DataFrame fusionné")
-        date_columns = ['dateNotification', 'datePublicationDonnees', 'dateTransmissionDonneesEtalab',
+        # On met les acheteurs et lieux au bon format
+        for x in self.df['acheteur']:
+            if type(x) == dict and 'id' in x:
+                x['id'] = str(x['id'])
+        for x in self.df['lieuExecution']:
+            if type(x) == dict and 'code' in x:
+                x['code'] = str(x['code'])
+        # Suppression des colonnes inutiles
+        self.df = self.df.drop('dateTransmissionDonneesEtalab', axis=1)
+        # Format des dates
+        date_columns = ['dateNotification', 'datePublicationDonnees',
                         'dateDebutExecution']
         for s in date_columns:
             self.df[s] = self.df[s].apply(str)
