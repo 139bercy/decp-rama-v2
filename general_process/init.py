@@ -73,6 +73,16 @@ class Init:
         url = [d["url"] for d in a]
         self.metadata[3]["url"] = url
 
+        # MEGA
+        os.makedirs("metadata/megalis-bretagne", exist_ok=True)
+        wget.download("https://www.data.gouv.fr/api/1/datasets/5f4f4f8910f4b55843deae51/",
+                      "metadata/megalis-bretagne/megalis-bretagne_0.json")
+        with open(f"metadata/megalis-bretagne/megalis-bretagne_0.json", 'r+') as f:
+            ref_json = json.load(f)
+        a = ref_json["resources"]
+        url = [d["url"] for d in a]
+        self.metadata[7]["url"] = url
+
         # Export metadata.json
         with open('metadata/metadata.json', 'w') as f:
             json.dump(self.metadata, f, indent=2, ensure_ascii=False)

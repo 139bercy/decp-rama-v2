@@ -9,8 +9,8 @@ class MegaProcess(SourceProcess):
         super().get()
 
     def convert(self):
-        super().convert()
+        pass
 
     def fix(self):
-        super().fix()
+        pass
 
