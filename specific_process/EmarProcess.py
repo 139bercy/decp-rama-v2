@@ -12,5 +12,5 @@ class EmarProcess(SourceProcess):
         super().convert()
 
     def fix(self):
-        super().fix()
+        pass
 
