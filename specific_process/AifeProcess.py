@@ -12,5 +12,5 @@ class AifeProcess(SourceProcess):
         super().convert()
 
     def fix(self):
-        super().fix()
+        pass
 
