@@ -7,7 +7,7 @@ from specific_process.BfcProcess import BfcProcess
 class ProcessFactory:
 
     def __init__(self):
-        self.processes = [BfcProcess]
+        self.processes = [PesProcess, AwsProcess, LyonProcess, BfcProcess]
         self.dataframes = []
 
     def getprocess(self):

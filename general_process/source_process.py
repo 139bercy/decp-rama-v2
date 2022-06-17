@@ -10,7 +10,7 @@ import logging
 class SourceProcess:
     def __init__(self, id_int):
         self.id_int = id_int
-        self.metadata = pd.read_json('metadata.json')
+        self.metadata = pd.read_json('metadata/metadata.json')
         self.url = self.metadata["url"][self.id_int]
         self.file_name = [f"{self.metadata['code'][self.id_int]}_{i}" for i in range(len(self.url))]
         self.source = self.metadata["code"][self.id_int]
@@ -18,13 +18,17 @@ class SourceProcess:
         self.df = pd.DataFrame()
 
     def get(self):
-        logging.info(f"Début du téléchargement de {len(self.url)} fichier(s) pour la source {self.source}")
+        logging.info(" ")
+        logging.info(" ")
+        logging.info(" ")
+        logging.info(f"Début du téléchargement : {len(self.url)} fichier(s) pour la source {self.source}")
         os.makedirs(f"sources/{self.source}", exist_ok=True)
         for i in range(len(self.url)):
             logging.info(f"{i+1}/{len(self.url)} : {self.file_name[i]}")
             wget.download(self.url[i], f"sources/{self.source}/{self.file_name[i]}.{self.format}")
 
     def convert(self):
+        logging.info(" ")
         # suppression des '
         for i in range(len(self.url)):
             with open(
@@ -59,7 +63,8 @@ class SourceProcess:
         logging.info(f"Nombre de marchés dans {self.source} après convert : {len(self.df)}")
 
     def fix(self):
-        logging.info(f"Début de fix : Ajout de la colonne source et suppression des duplicatas de {self.source}")
+        logging.info(" ")
+        logging.info(f"Début de fix: Ajout de la colonne source et suppression des duplicatas de {self.source}")
         # Ajout de source
         self.df = self.df.assign(source=self.source)
         # Suppression des doublons
