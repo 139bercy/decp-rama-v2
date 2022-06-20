@@ -9,11 +9,6 @@ class PesProcess(SourceProcess):
     def fix(self):
         super().fix()
         # On enlève les OrderedDict et on se ramène au format souhaité
-        self.df['acheteur'] = self.df['acheteur'].apply(lambda x: json.loads(json.dumps(x)))
-        self.df['lieuExecution'] = self.df['lieuExecution'].apply(
-            lambda x: json.loads(json.dumps(x)))
-        self.df['titulaires'] = self.df['titulaires'].apply(
-            lambda x: json.loads(json.dumps(x)))
         self.df['titulaires'] = self.df['titulaires'].apply(
             lambda x: x if x is None or type(x) == list else [x])
         self.df['modifications'] = self.df['modifications'].apply(
