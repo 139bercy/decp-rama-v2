@@ -6,6 +6,9 @@ class PesProcess(SourceProcess):
     def __init__(self):
         super().__init__(0)
 
+    def _url_init(self):
+        super()._url_init()
+
     def fix(self):
         super().fix()
         # On enlève les OrderedDict et on se ramène au format souhaité
