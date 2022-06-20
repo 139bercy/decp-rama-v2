@@ -43,7 +43,7 @@ class SourceProcess:
             for i in range(len(self.url)):
                 with open(
                         f"sources/{self.source}/{self.file_name[i]}.{self.format}") as xml_file:
-                    dico = xmltodict.parse(xml_file.read())
+                    dico = xmltodict.parse(xml_file.read(), dict_constructor = dict)
                     df = pd.DataFrame.from_dict(dico['marches']['marche'])
                 li.append(df)
             df = pd.concat(li)
