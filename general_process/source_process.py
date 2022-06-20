@@ -5,17 +5,49 @@ import pandas as pd
 import xmltodict
 import re
 import logging
+import shutil
+pd.options.mode.chained_assignment = None
 
 
 class SourceProcess:
     def __init__(self, id_int):
+        # Création des variables de source
         self.id_int = id_int
         self.metadata = pd.read_json('metadata/metadata.json')
-        self.url = self.metadata["url"][self.id_int]
-        self.file_name = [f"{self.metadata['code'][self.id_int]}_{i}" for i in range(len(self.url))]
+        self.abr = self.metadata["abr"][self.id_int]
         self.source = self.metadata["code"][self.id_int]
         self.format = self.metadata["format"][self.id_int]
         self.df = pd.DataFrame()
+
+        # Récupération des urls
+        logging.info(f"Récupération de la liste des url pour {self.source}")
+        self._url_init()
+        logging.info(f"Récupération des url pour {self.source} OK")
+        self.file_name = [f"{self.metadata['code'][self.id_int]}_{i}" for i in range(len(self.url))]
+
+    def _clean_folder(self):
+        # Lavage des dossiers de la source
+        logging.info(f"Clear {self.source}")
+        if os.path.exists(f"sources/{self.source}"):
+            shutil.rmtree(f"sources/{self.source}")
+        if os.path.exists(f"metadata/{self.source}"):
+            shutil.rmtree(f"metadata/{self.source}")
+        logging.info(f"Clear {self.source} OK")
+
+    def _url_init(self):
+        os.makedirs(f"metadata/{self.source}", exist_ok=True)
+        self.cle_api = self.metadata["cle_api"][self.id_int]
+        url = []
+        for i in range(len(self.cle_api)):
+            wget.download(f"https://www.data.gouv.fr/api/1/datasets/{self.cle_api[i]}/",
+                          f"metadata/{self.source}/metadata_{self.abr}_{i}.json")
+            with open(f"metadata/{self.source}/metadata_{self.abr}_{i}.json", 'r+') as f:
+                ref_json = json.load(f)
+            ressources = ref_json["resources"]
+            url = url + [d["url"] for d in ressources if
+                         (d["url"].endswith("xml") or d["url"].endswith("json"))]
+        self.metadata["url"][self.id_int] = url
+        self.url = self.metadata["url"][self.id_int]
 
     def get(self):
         logging.info(" ")
@@ -31,11 +63,10 @@ class SourceProcess:
         logging.info(" ")
         # suppression des '
         for i in range(len(self.url)):
-            with open(
-                    f"sources/{self.source}/{self.file_name[i]}.{self.format}") as file:
+            file_path = f"sources/{self.source}/{self.file_name[i]}.{self.format}"
+            with open(file_path) as file:
                 chaine = re.sub("\'", " ", file.read())
-            with open(
-                    f"sources/{self.source}/{self.file_name[i]}.{self.format}", "w") as file:
+            with open(file_path, "w") as file:
                 file.write(chaine)
         logging.info(f"Début de convert: mise au format DataFrame de {self.source}")
         if self.format == 'xml':

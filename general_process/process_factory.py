@@ -6,16 +6,17 @@ from specific_process.AifeProcess import AifeProcess
 from specific_process.EmarProcess import EmarProcess
 from specific_process.MegaProcess import MegaProcess
 
+
 class ProcessFactory:
 
     def __init__(self):
-        self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, BfcProcess, MegaProcess]
+        self.processes = [PesProcess, AwsProcess, LyonProcess, BfcProcess, AifeProcess, EmarProcess, MegaProcess]
         self.dataframes = []
 
-    def getprocess(self):
+    def run_processes(self):
         for process in self.processes:
             p = process()
             p.get()
-            p.convert()
-            p.fix()
-            self.dataframes.append(p.df)
+            # p.convert()
+            # p.fix()
+            # self.dataframes.append(p.df)

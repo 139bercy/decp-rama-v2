@@ -6,6 +6,11 @@ class LyonProcess(SourceProcess):
     def __init__(self):
         super().__init__(4)
 
+    def _url_init(self):
+        self.metadata["url"][self.id_int] = [self.metadata["url_source"][self.id_int]]
+        self.url = self.metadata["url"][self.id_int]
+        self.file_name = [f"{self.metadata['code'][self.id_int]}_{i}" for i in range(len(self.url))]
+
     def get(self):
         super().get()
 
