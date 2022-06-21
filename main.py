@@ -6,17 +6,12 @@ import logging
 def main():
     p = ProcessFactory()
     p.run_processes()
-    logging.info(f"------------------------------GLOBAL-PROCESS------------------------------")
     gp = GlobalProcess()
     gp.dataframes = p.dataframes
-    logging.info("  ÉTAPE MERGE ALL")
     gp.merge_all()
-    logging.info("  ÉTAPE FIX ALL")
     gp.fix_all()
     gp.drop_duplicate()
-    logging.info("  ÉTAPE EXPORTATION")
-    gp.export_to_xml()
-    gp.export_to_json()
+    gp.export()
 
 
 if __name__ == "__main__":
