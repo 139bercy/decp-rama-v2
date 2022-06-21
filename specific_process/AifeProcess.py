@@ -3,7 +3,7 @@ from general_process.source_process import SourceProcess
 
 class AifeProcess(SourceProcess):
     def __init__(self):
-        super().__init__(2)
+        super().__init__("aife")
 
     def _url_init(self):
         super()._url_init()
@@ -15,5 +15,5 @@ class AifeProcess(SourceProcess):
         super().convert()
 
     def fix(self):
-        pass
+        super().fix()
 

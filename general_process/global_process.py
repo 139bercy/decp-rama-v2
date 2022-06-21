@@ -41,7 +41,6 @@ class GlobalProcess:
                                  date(int(float(x.split("-")[0])), int(float(x.split("-")[1])),
                                       int(float(x.split("-")[2]))).isoformat()
                                  if str(x) != 'nan' and len(x.split("-")) >= 3 else x)
-        logging.info("Début de l'étape Fix_all du DataFrame fusionné")
         logging.info(f"Nombre de marchés dans le DataFrame fusionné après merge : {len(self.df)}")
 
     def drop_duplicate(self):

@@ -3,7 +3,7 @@ from general_process.source_process import SourceProcess
 
 class AwsProcess(SourceProcess):
     def __init__(self):
-        super().__init__(1)
+        super().__init__("aws")
 
     def _url_init(self):
         super()._url_init()
