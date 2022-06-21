@@ -13,6 +13,7 @@ class SourceProcess:
     def __init__(self, key):
 
         # Création des variables de source
+        logging.info("  ÉTAPE INIT")
         self.key = key
         with open("metadata/metadata.json", 'r+') as f:
             self.metadata = json.load(f)
@@ -54,6 +55,7 @@ class SourceProcess:
         logging.info(f"Récupération des url OK")
 
     def get(self):
+        logging.info("  ÉTAPE GET")
         # Lavage des dossiers dans sources
         logging.info(f"Début du nettoyage de sources/{self.source}")
         if os.path.exists(f"sources/{self.source}"):
@@ -68,6 +70,7 @@ class SourceProcess:
         logging.info(f"Téléchargement : {len(self.url)} fichier(s) OK")
 
     def convert(self):
+        logging.info("  ÉTAPE CONVERT")
         # suppression des '
         for i in range(len(self.url)):
             file_path = f"sources/{self.source}/{self.file_name[i]}.{self.format}"
@@ -101,6 +104,7 @@ class SourceProcess:
         logging.info(f"Nombre de marchés dans {self.source} après convert : {len(self.df)}")
 
     def fix(self):
+        logging.info("  ÉTAPE FIX")
         logging.info(f"Début de fix: Ajout de la colonne source et suppression des duplicatas de {self.source}")
         # Ajout de source
         self.df = self.df.assign(source=self.source)

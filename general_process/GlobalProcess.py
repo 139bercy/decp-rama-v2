@@ -8,10 +8,12 @@ import logging
 
 class GlobalProcess:
     def __init__(self):
+        logging.info(f"------------------------------GlobalProcess------------------------------")
         self.df = pd.DataFrame()
         self.dataframes = []
 
     def merge_all(self):
+        logging.info("  ÉTAPE MERGE ALL")
         logging.info("Début de l'étape Merge des Dataframes")
         self.df = pd.concat(self.dataframes, ignore_index=True)
         self.df = self.df.reset_index(drop=True)
@@ -19,6 +21,7 @@ class GlobalProcess:
         logging.info(f"Nombre de marchés dans le DataFrame fusionné après merge : {len(self.df)}")
 
     def fix_all(self):
+        logging.info("  ÉTAPE FIX ALL")
         logging.info("Début de l'étape Fix_all du DataFrame fusionné")
         # On met les acheteurs et lieux au bon format
         for x in self.df['acheteur']:
@@ -56,7 +59,8 @@ class GlobalProcess:
         logging.info("Suppression OK")
         logging.info(f"Nombre de marchés dans le DataFrame fusionné après suppression des doublons : {len(self.df)}")
 
-    def export_to_xml(self):
+    def export(self):
+        logging.info("  ÉTAPE EXPORTATION")
         logging.info("Début de l'étape Exportation en XML")
         dico = {'marches': [{'marche': {k: v for k, v in m.items() if str(v) != 'nan'}}
                             for m in self.df.to_dict(orient='records')]}
@@ -65,8 +69,6 @@ class GlobalProcess:
         xml_size = os.path.getsize(r'results/decp.xml')
         logging.info("Exportation XML OK")
         logging.info(f"Taille de decp.xml : {xml_size}")
-
-    def export_to_json(self):
         logging.info("Début de l'étape Exportation en JSON")
         dico = {'marches': [{k: v for k, v in m.items() if str(v) != 'nan'}
                             for m in self.df.to_dict(orient='records')]}

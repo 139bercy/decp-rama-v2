@@ -21,12 +21,8 @@ class ProcessFactory:
     def run_processes(self):
         for process in self.processes:
             logging.info(f"------------------------------{repr(process).split('.')[-2]}------------------------------")
-            logging.info("  ÉTAPE INIT")
             p = process()
-            logging.info("  ÉTAPE GET")
             p.get()
-            logging.info("  ÉTAPE CONVERT")
             p.convert()
-            logging.info("  ÉTAPE FIX")
             p.fix()
             self.dataframes.append(p.df)
