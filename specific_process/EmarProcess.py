@@ -3,7 +3,7 @@ from general_process.source_process import SourceProcess
 
 class EmarProcess(SourceProcess):
     def __init__(self):
-        super().__init__(3)
+        super().__init__("emar")
 
     def _url_init(self):
         super()._url_init()
