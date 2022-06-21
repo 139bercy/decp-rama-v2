@@ -1,5 +1,5 @@
-from general_process.process_factory import ProcessFactory
-from general_process.global_process import GlobalProcess
+from general_process.ProcessFactory import ProcessFactory
+from general_process.GlobalProcess import GlobalProcess
 import logging
 
 
