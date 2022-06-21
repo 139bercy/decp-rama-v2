@@ -4,18 +4,12 @@ import json
 
 class LyonProcess(SourceProcess):
     def __init__(self):
-        super().__init__(4)
+        super().__init__("lyon")
 
     def _url_init(self):
-        self.metadata["url"][self.id_int] = [self.metadata["url_source"][self.id_int]]
-        self.url = self.metadata["url"][self.id_int]
-        self.file_name = [f"{self.metadata['code'][self.id_int]}_{i}" for i in range(len(self.url))]
-
-    def get(self):
-        super().get()
-
-    def convert(self):
-        super().convert()
+        self.metadata[self.key]["url"] = [self.metadata[self.key]["url_source"]]
+        self.url = self.metadata[self.key]["url"]
+        self.file_name = [f"{self.metadata[self.key]['code']}_{i}" for i in range(len(self.url))]
 
     def fix(self):
         super().fix()
