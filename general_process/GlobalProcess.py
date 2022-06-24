@@ -44,7 +44,7 @@ class GlobalProcess:
                                  date(int(float(x.split("-")[0])), int(float(x.split("-")[1])),
                                       int(float(x.split("-")[2]))).isoformat()
                                  if str(x) != 'nan' and len(x.split("-")) >= 3 else x)
-        logging.info(f"Nombre de marchés dans le DataFrame fusionné après merge : {len(self.df)}")
+        logging.info(f"Nombre de marchés dans le DataFrame fusionné après fix_all : {len(self.df)}")
 
     def drop_duplicate(self):
         # Suppression des doublons
@@ -52,7 +52,7 @@ class GlobalProcess:
         df_str = self.df.astype(str)
         for c in df_str.columns:
             df_str[c] = df_str[c].str.replace(' ', '')
-        df_str = df_str.drop(["source"], axis=1)
+        df_str = df_str.drop(["source", "id", "uid", "uuid"], axis=1)
         index_to_keep = df_str.drop_duplicates().index.tolist()
         self.df = self.df.iloc[index_to_keep]
         self.df = self.df.reset_index(drop=True)
