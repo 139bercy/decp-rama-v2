@@ -16,4 +16,5 @@ class AifeProcess(SourceProcess):
 
     def fix(self):
         super().fix()
+        self.df.drop([index for index, rows in df.iterrows() if type(rows['acheteur']) != dict], inplace=True)
 
