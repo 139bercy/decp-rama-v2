@@ -72,16 +72,23 @@ class SourceProcess:
     def convert(self):
         logging.info("  ÉTAPE CONVERT")
         # suppression des '
-        for i in range(len(self.url)):
+        count = 0
+        repertoire_source = f"sources/{self.source}"
+        for path in os.listdir(repertoire_source):
+            if os.path.isfile(os.path.join(repertoire_source, path)):
+                count += 1
+        for i in range(count):
             file_path = f"sources/{self.source}/{self.file_name[i]}.{self.format}"
             with open(file_path) as file:
                 chaine = re.sub("\'", " ", file.read())
             with open(file_path, "w") as file:
                 file.write(chaine)
+        if count != len(self.url):
+            logging.warning(f"Nombre de fichiers en local inégal au nombre d'url trouvé")
         logging.info(f"Début de convert: mise au format DataFrame de {self.source}")
         if self.format == 'xml':
             li = []
-            for i in range(len(self.url)):
+            for i in range(count):
                 with open(
                         f"sources/{self.source}/{self.file_name[i]}.{self.format}") as xml_file:
                     dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
@@ -92,7 +99,7 @@ class SourceProcess:
             self.df = df
         elif self.format == 'json':
             li = []
-            for i in range(len(self.url)):
+            for i in range(count):
                 with open(
                         f"sources/{self.source}/{self.file_name[i]}.{self.format}") as json_file:
                     dico = json.load(json_file)
