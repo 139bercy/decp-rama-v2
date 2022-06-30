@@ -25,4 +25,7 @@ class MegaProcess(SourceProcess):
         super().fix()
         self.df['titulaires'] = self.df['titulaires'].apply(
             lambda x: x if x is None or type(x) == list else [x])
+        # Dans Megalis, il n'y a pas de colonne modifications, donc on l'ajoute
+        if 'modifications' not in self.df.columns:
+            self.df['modifications'] = self.df['titulaires'].apply(lambda x: [])
 
