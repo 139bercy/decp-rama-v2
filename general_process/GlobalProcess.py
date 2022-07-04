@@ -13,6 +13,7 @@ class GlobalProcess:
         self.dataframes = []
 
     def merge_all(self):
+        """Étape merge all qui permet la fusion des DataFrames de l'ensemble des sources en un seul."""
         logging.info("  ÉTAPE MERGE ALL")
         logging.info("Début de l'étape Merge des Dataframes")
         self.df = pd.concat(self.dataframes, ignore_index=True)
@@ -21,6 +22,7 @@ class GlobalProcess:
         logging.info(f"Nombre de marchés dans le DataFrame fusionné après merge : {len(self.df)}")
 
     def fix_all(self):
+        """Étape fix all qui permet l'uniformisation du DataFrame."""
         logging.info("  ÉTAPE FIX ALL")
         logging.info("Début de l'étape Fix_all du DataFrame fusionné")
         # On met les acheteurs et lieux au bon format
@@ -49,6 +51,7 @@ class GlobalProcess:
         self.df['dureeMois'] = self.df['dureeMois'].apply(lambda x : 0 if x == '' or str(x) in ['nan', 'None'] else x)
 
     def drop_duplicate(self):
+        """Étape drop duplicate qui supprime les duplicatas purs après avoir supprimé les espaces."""
         # Suppression des doublons
         logging.info("Début de l'étape Suppression des doublons")
         df_str = self.df.astype(str)
@@ -62,6 +65,7 @@ class GlobalProcess:
         logging.info(f"Nombre de marchés dans le DataFrame fusionné après suppression des doublons : {len(self.df)}")
 
     def export(self):
+        """Étape exportation des résultats au format json et xml dans le dossier /results"""
         logging.info("  ÉTAPE EXPORTATION")
         logging.info("Début de l'étape Exportation en XML")
         dico = {'marches': [{'marche': {k: v for k, v in m.items() if str(v) != 'nan'}}

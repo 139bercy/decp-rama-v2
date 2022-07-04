@@ -4,6 +4,8 @@ import logging
 
 
 def main():
+    """La fonction main() appelle tour à tour les processus spécifiques (ProcessFactory.py/SourceProcess.py) et les
+    étapes du Global Process (GlobalProcess.py)."""
     p = ProcessFactory()
     p.run_processes()
     gp = GlobalProcess()
@@ -15,6 +17,7 @@ def main():
 
 
 if __name__ == "__main__":
+    """Lorsqu'on appelle la fonction main (courante), on définit le niveau de logging et le format d'affichage."""
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
     logging.root.setLevel(logging.INFO)
 
