@@ -10,9 +10,10 @@ pd.options.mode.chained_assignment = None
 
 
 class SourceProcess:
+    """La classe SourceProcess est une classe abstraite qui sert de parent à chaque classe enfant de sources."""
     def __init__(self, key):
-
-        # Création des variables de source
+        """L'étape __init__ crée les variables associées à la classe SourceProcess : key, source, format, df file_name,
+        url, cle_api et metadata."""
         logging.info("  ÉTAPE INIT")
         self.key = key
         with open("metadata/metadata.json", 'r+') as f:
@@ -30,7 +31,7 @@ class SourceProcess:
         self.file_name = [f"{self.metadata[self.key]['code']}_{i}" for i in range(len(self.url))]
 
     def _clean_metadata_folder(self):
-
+        """La fonction _clean_metadata_folder permet le nettoyage de /metadata/{self.source}"""
         # Lavage des dossiers dans metadata
         logging.info(f"Début du nettoyage de metadata/{self.source}")
         if os.path.exists(f"metadata/{self.source}"):
@@ -38,6 +39,8 @@ class SourceProcess:
         logging.info(f"Nettoyage metadata/{self.source} OK")
 
     def _url_init(self):
+        """_url_init permet la récupération de l'ensemble des url des fichiers qui doivent être téléchargés pour une
+        source. Ces url sont conservés dans self.metadata, le dictionnaire correspondant à la source."""
         logging.info(f"Début de la récupération de la liste des url")
         os.makedirs(f"metadata/{self.source}", exist_ok=True)
         self.cle_api = self.metadata[self.key]["cle_api"]
@@ -55,6 +58,8 @@ class SourceProcess:
         logging.info(f"Récupération des url OK")
 
     def get(self):
+        """Étape get qui permet le lavage du dossier sources/{self.source} et la récupération de l'esnemble des
+        fichiers présents sur chaque url."""
         logging.info("  ÉTAPE GET")
         # Lavage des dossiers dans sources
         logging.info(f"Début du nettoyage de sources/{self.source}")
@@ -70,6 +75,8 @@ class SourceProcess:
         logging.info(f"Téléchargement : {len(self.url)} fichier(s) OK")
 
     def convert(self):
+        """Étape de conversion des fichiers qui supprime les ' et concatène les fichiers présents dans {self.source}
+        dans un seul DataFrame"""
         logging.info("  ÉTAPE CONVERT")
         # suppression des '
         count = 0
@@ -111,6 +118,7 @@ class SourceProcess:
         logging.info(f"Nombre de marchés dans {self.source} après convert : {len(self.df)}")
 
     def fix(self):
+        """Étape fix qui crée la colonne source dans le DataFrame et qui supprime les doublons purs."""
         logging.info("  ÉTAPE FIX")
         logging.info(f"Début de fix: Ajout de la colonne source et suppression des duplicatas de {self.source}")
         # Ajout de source
