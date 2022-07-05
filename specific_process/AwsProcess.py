@@ -13,11 +13,11 @@ class AwsProcess(SourceProcess):
         # self.df['dureeMois'] = self.df['dureeMois'].astype(str)
         # self.df['montant'] = self.df['montant'].astype(str)
         # On se ramène au format souhaité pour titulaires, modifications et concessionnaires
-        self.df['modifications'] = [x if str(x) == 'nan' or str(x) == '[]'
+        self.df['modifications'] = [[] if str(x) == 'nan' or str(x) == '[]'
                                     else ([{'modification': [y for y in x]}] if len(x) > 1
                                           else [{'modification': x[0]}])
                                     for x in self.df['modifications']]
-        self.df['titulaires'] = [x if str(x) == 'nan' or str(x) == '[]'
+        self.df['titulaires'] = [[] if str(x) == 'nan' or str(x) == '[]'
                                  else ([{'titulaire': [y for y in x]}] if len(x) > 1 else [{'titulaire': x[0]}])
                                  for x in self.df['titulaires']]
         self.df['concessionnaires'] = [x if str(x) == 'nan' or str(x) == '[]'

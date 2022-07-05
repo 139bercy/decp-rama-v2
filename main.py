@@ -13,7 +13,8 @@ def main():
     gp.merge_all()
     gp.fix_all()
     gp.drop_duplicate()
-    gp.export()
+    gp.export_to_xml()
+    gp.export_to_json()
 
 
 if __name__ == "__main__":

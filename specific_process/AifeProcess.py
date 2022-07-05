@@ -15,13 +15,12 @@ class AifeProcess(SourceProcess):
         super().convert()
 
     def fix(self):
-        self.df.drop([index for index, rows in self.df.iterrows() if type(rows['acheteur']) != dict], inplace=True)
-        self.df = self.df.reset_index(drop=True)
         super().fix()
+        # On enlève les None des "titulaires" et "modifications"
         self.df['titulaires'] = self.df['titulaires'].apply(
-            lambda x: x if x is None or type(x) == list else [x])
+            lambda x: x if type(x) == list else [] if x is None or str(x) == 'nan' else [x])
         self.df['modifications'] = self.df['modifications'].apply(
-            lambda x: x if x is None else json.loads(json.dumps(x)))
+            lambda x: x if x is None or str(x) == 'nan' else json.loads(json.dumps(x)))
         self.df['modifications'] = self.df['modifications'].apply(
-            lambda x: x if type(x) == list else [] if x is None else [x])
+            lambda x: x if type(x) == list else [] if x is None or str(x) == 'nan' else [x])
 

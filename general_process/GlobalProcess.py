@@ -47,8 +47,10 @@ class GlobalProcess:
                                       int(float(x.split("-")[2]))).isoformat()
                                  if str(x) != 'nan' and len(x.split("-")) >= 3 else x)
         logging.info(f"Nombre de marchés dans le DataFrame fusionné après merge : {len(self.df)}")
-        # DureeMois doit être un float
-        self.df['dureeMois'] = self.df['dureeMois'].apply(lambda x : 0 if x == '' or str(x) in ['nan', 'None'] else x)
+        # Format de "dureeMois" et dans modifications
+        self.df['dureeMois'] = self.df['dureeMois'].apply(lambda x : 0 if x == '' or str(x) in ['nan', 'None'] else int(x))
+        # Format des "id"
+        self.df['id'] = self.df['id'].apply(lambda x : 0 if x == '' or str(x) in ['nan', 'None'] else x)
 
     def drop_duplicate(self):
         """Étape drop duplicate qui supprime les duplicatas purs après avoir supprimé les espaces."""
@@ -64,38 +66,52 @@ class GlobalProcess:
         logging.info("Suppression OK")
         logging.info(f"Nombre de marchés dans le DataFrame fusionné après suppression des doublons : {len(self.df)}")
 
-    def export(self):
-        """Étape exportation des résultats au format json et xml dans le dossier /results"""
+    def export_to_xml(self):
         logging.info("  ÉTAPE EXPORTATION")
         logging.info("Début de l'étape Exportation en XML")
-        dico = {'marches': [{'marche': {k: v for k, v in m.items() if str(v) != 'nan'}}
+        '''dico = {'marches': [{'marche': {k: v for k, v in m.items() if str(v) != 'nan'}}
                             for m in self.df.to_dict(orient='records')]}
         with open("results/decp.xml", 'w') as f:
             f.write(dict2xml(dico))
         xml_size = os.path.getsize(r'results/decp.xml')
         logging.info("Exportation XML OK")
-        logging.info(f"Taille de decp.xml : {xml_size}")
-        logging.info("Début de l'étape Exportation en JSON")
+        logging.info(f"Taille de decp.xml : {xml_size}")'''
+
+    def export_to_json(self):
+        logging.info("Début de la mise au format DECP-Augmente")
+        # Pour le JSON, on doit se ramener au format initial.
         dico = {'marches': [{k: v for k, v in m.items() if str(v) != 'nan'}
                             for m in self.df.to_dict(orient='records')]}
         for marche in dico['marches']:
-            if 'titulaires' in marche.keys() and marche['titulaires'] is not None and len(marche['titulaires']) > 0:
-                if type(marche['titulaires'][0]['titulaire']) == list:
-                    marche['titulaires'] = marche['titulaires'][0]['titulaire']
-                else:
-                    marche['titulaires'] = [marche['titulaires'][0]['titulaire']]
-            if 'modifications' in marche.keys() and marche['modifications'] is not None and len(marche['modifications']) > 0:
+            # Pour chaque marché, on enlève l'index "titulaire" dans "titulaires"
+            if 'titulaires' in marche.keys():
+                if len(marche['titulaires']) > 0 and 'titulaire' in marche['titulaires'][0]:
+                    if type(marche['titulaires'][0]['titulaire']) == list:
+                        marche['titulaires'] = [x for x in marche['titulaires'][0]['titulaire'] if x is not None]
+                    else:
+                        marche['titulaires'] = [marche['titulaires'][0]['titulaire']]
+            # De même pour l'index "modification" de "modifications"
+            if len(marche['modifications']) > 0 and 'modification' in marche['modifications'][0]:
                 if type(marche['modifications'][0]['modification']) == list:
-                    marche['modifications'] = marche['modifications'][0]['modification']
+                    marche['modifications'] = [x for x in marche['modifications'][0]['modification']]
                 else:
                     marche['modifications'] = [marche['modifications'][0]['modification']]
-            if 'concessionnaires' in marche.keys() and marche['concessionnaires'] is not None and len(
-                    marche['concessionnaires']) > 0:
-                if type(marche['concessionnaires'][0]['concessionnaire']) == list:
-                    marche['concessionnaires'] = marche['concessionnaires'][0]['concessionnaire']
-                else :
-                    marche['concessionnaires'] = [marche['concessionnaires'][0]['concessionnaire']]
+            # De même pour les "titulaires" dans "modifications
+            for modification in marche['modifications']:
+                if 'titulaires' in modification.keys():
+                    modification['titulaires'] = [value for value in modification['titulaires'].values() if
+                                                  value is not None]
+                if 'dureeMois' in modification.keys():
+                    modification['dureeMois'] = int(modification['dureeMois'])
 
+            # De même pour "concessionnaire" dans "concessionnaires"
+            if 'concessionaires' in marche.keys():
+                if len(marche['concessionnaires']) > 0 and 'concessionnaire' in marche['concessionnaires'][0]:
+                    if type(marche['concessionnaires'][0]['concessionnaire']) == list:
+                        marche['concessionnaires'] = [x for x in marche['concessionnaires'][0]['concessionnaire']]
+                    else:
+                        marche['concessionnaires'] = [marche['concessionnaires'][0]['concessionnaire']]
+        logging.info("Début de l'étape Exportation en JSON")
         with open("results/decp.json", 'w') as f:
             json.dump(dico, f, indent=2, ensure_ascii=False)
         json_size = os.path.getsize(r'results/decp.json')
