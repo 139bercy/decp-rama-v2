@@ -27,3 +27,7 @@ Certaines données sources n'étant pas valides, nous corrigeons ce qui peut êt
 - **export_to_json :** On exporte au format XML réglementaire.
 
 Si vous avez connaissance de données essentielles de la commande publique facilement accessibles (téléchargement en masse possible) et qui ne sont pas encore identifiées dans le fichier metadata.json, merci de [nous en informer](#contact).
+
+**5. CONVENTIONS DE FORMAT**
+
+
