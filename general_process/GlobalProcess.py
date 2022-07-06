@@ -69,13 +69,13 @@ class GlobalProcess:
     def export_to_xml(self):
         logging.info("  ÉTAPE EXPORTATION")
         logging.info("Début de l'étape Exportation en XML")
-        '''dico = {'marches': [{'marche': {k: v for k, v in m.items() if str(v) != 'nan'}}
+        dico = {'marches': [{'marche': {k: v for k, v in m.items() if str(v) != 'nan'}}
                             for m in self.df.to_dict(orient='records')]}
         with open("results/decp.xml", 'w') as f:
             f.write(dict2xml(dico))
         xml_size = os.path.getsize(r'results/decp.xml')
         logging.info("Exportation XML OK")
-        logging.info(f"Taille de decp.xml : {xml_size}")'''
+        logging.info(f"Taille de decp.xml : {xml_size}")
 
     def export_to_json(self):
         logging.info("Début de la mise au format DECP-Augmente")

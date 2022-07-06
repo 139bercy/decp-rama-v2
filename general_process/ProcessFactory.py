@@ -24,7 +24,7 @@ class ProcessFactory:
         for process in self.processes:
             logging.info(f"------------------------------{repr(process).split('.')[-2]}------------------------------")
             p = process()
-            #p.get()
+            p.get()
             p.convert()
             p.fix()
             self.dataframes.append(p.df)
