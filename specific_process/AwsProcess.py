@@ -5,9 +5,6 @@ class AwsProcess(SourceProcess):
     def __init__(self):
         super().__init__("aws")
 
-    def _url_init(self):
-        super()._url_init()
-
     def fix(self):
         super().fix()
         # self.df['dureeMois'] = self.df['dureeMois'].astype(str)

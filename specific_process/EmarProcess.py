@@ -5,15 +5,6 @@ class EmarProcess(SourceProcess):
     def __init__(self):
         super().__init__("emar")
 
-    def _url_init(self):
-        super()._url_init()
-
-    def get(self):
-        super().get()
-
-    def convert(self):
-        super().convert()
-
     def fix(self):
         super().fix()
         self.df['modifications'] = [[] if str(x) == 'nan' or str(x) == '[]'

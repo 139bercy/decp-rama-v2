@@ -5,9 +5,6 @@ class MaxiProcess(SourceProcess):
     def __init__(self):
         super().__init__("maxi")
 
-    def _url_init(self):
-        super()._url_init()
-
     def fix(self):
         super().fix()
         # On enlève les None des "titulaires" et "modifications"

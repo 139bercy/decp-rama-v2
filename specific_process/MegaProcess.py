@@ -5,12 +5,6 @@ class MegaProcess(SourceProcess):
     def __init__(self):
         super().__init__("mega")
 
-    def _url_init(self):
-        super()._url_init()
-
-    def get(self):
-        super().get()
-
     def convert(self):
         # les fichiers xml de megalis ne sont pas au bon format
         for i in range(len(self.url)):
