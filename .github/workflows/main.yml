@@ -22,3 +22,9 @@ jobs:
     -
       name: Dépendances
       run: pip install pandas datetime wget xmltodict regex pytest-shutil dict2xml
+    -
+      name: Process
+      run: python main.py
+    -
+      name: test 
+      run: cd results/ && ls
