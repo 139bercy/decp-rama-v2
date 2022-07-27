@@ -21,4 +21,4 @@ jobs:
       uses: actions/checkout@v2
     -
       name: Dépendances
-      run: pip install pandas datetime logging wget os json xmltodict re shutil dict2xml
+      run: pip install pandas datetime wget xmltodict regex pytest-shutil dict2xml
