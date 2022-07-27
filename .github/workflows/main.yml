@@ -3,18 +3,10 @@ name: Téléchargement et Publication des données DECP
 on:
   schedule:
       - cron: '0 0 * * *'
-  push:
-    branches:
-      - 'main'
-  pull_request:
-    branches:
-      - 'main'
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container:
-      image: 139bercy/decp
+    runs-on: 139bercy/decp
     steps:
     - 
       name: Checkout
