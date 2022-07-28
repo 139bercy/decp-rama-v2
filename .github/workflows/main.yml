@@ -6,7 +6,9 @@ on:
 
 jobs:
   build:
-    runs-on: 139bercy/decp
+    runs-on: ubuntu-latest
+    container:
+      image: 138bercy/decp
     steps:
     - 
       name: Checkout
