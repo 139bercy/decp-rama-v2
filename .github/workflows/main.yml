@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: 139bercy/decp-rama
+      image: 139bercy/decp
     steps:
     - 
       name: Checkout
