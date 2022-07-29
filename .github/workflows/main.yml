@@ -27,5 +27,5 @@ jobs:
       run: python main.py
     -
       name: Publication
-      run: lftp -u opendatamef:xeib9foothiz4chi fr.ftp.opendatasoft.com -e "set ftp:ssl-force true ; set ssl:verify-certificate false; cd decp; cd test; put results/decp.json ; quit"
+      run: lftp -u ${{ secrets.LOG }}:${{ secrets.MDP }} ${{ secrets.SERV }} -e "set ftp:ssl-force true ; set ssl:verify-certificate false; cd decp; cd test; put results/decp.json ; quit"
 
