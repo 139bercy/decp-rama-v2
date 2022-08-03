@@ -24,6 +24,17 @@ Certaines données sources n'étant pas valides, nous corrigeons ce qui peut êt
 - **merge_all :** On aggrège les DataFrame en un DataFrame unique.
 - **drop_duplicate :** On supprime les lignes dupliquées (marchés présents dans plusieurs sources de données).
 - **export_to_xml :** On exporte au format XML réglementaire.
-- **export_to_json :** On exporte au format XML réglementaire.
+- **export_to_json :** On exporte au format JSON réglementaire.
+
+
+**4. CONTINUOUS INTEGRATION**
+
+Dans l'objectif de remplacement de decp-rama, decp-rama-v2 dispose d'une CI qui permet de publier automatiquement le résultat de son script de manière journalière. Tous les jours, la CI :
+- Lance un docker via Github Action qui s'appuie sur une image publiée sur DockerHub. Cette image est générée via le DockerFile dans le dossier docker/
+et publiée grâce au script publish_docker.sh.
+- Récuperer le dossier github via actions/checkout@v2.
+- Installer les dépendances nécessaires aux scripts de decp-rama-v2.
+- Lancer main.py
+- Publier sur le serveur FTP de economie.gouv dans le dossier decp/test le résultat du script : results/decp.json
 
 Si vous avez connaissance de données essentielles de la commande publique facilement accessibles (téléchargement en masse possible) et qui ne sont pas encore identifiées dans le fichier metadata.json, merci de [nous en informer](#contact).
