@@ -10,10 +10,14 @@ pd.options.mode.chained_assignment = None
 
 
 class SourceProcess:
-    """La classe SourceProcess est une classe abstraite qui sert de parent à chaque classe enfant de sources."""
+    """La classe SourceProcess est une classe abstraite qui sert de parent à chaque classe enfant de
+    sources. Elle sert à définir le cas général des étapes de traitement d'une source : création des
+    varaibles de classe (__init__), nettoyage des dossiers de la source (_clean_metadata_folder),
+    récupération des URLs (_url_init), get, convert et fix."""
+
     def __init__(self, key):
-        """L'étape __init__ crée les variables associées à la classe SourceProcess : key, source, format, df file_name,
-        url, cle_api et metadata."""
+        """L'étape __init__ crée les variables associées à la classe SourceProcess : key, source,
+        format, df, file_name, url, cle_api et metadata."""
         logging.info("  ÉTAPE INIT")
         self.key = key
         with open("metadata/metadata.json", 'r+') as f:
@@ -39,9 +43,10 @@ class SourceProcess:
         logging.info(f"Nettoyage metadata/{self.source} OK")
 
     def _url_init(self):
-        """_url_init permet la récupération de l'ensemble des url des fichiers qui doivent être téléchargés pour une
-        source. Ces url sont conservés dans self.metadata, le dictionnaire correspondant à la source."""
-        logging.info(f"Début de la récupération de la liste des url")
+        """_url_init permet la récupération de l'ensemble des url des fichiers qui doivent être
+        téléchargés pour une source. Ces url sont conservés dans self.metadata, le dictionnaire
+        correspondant à la source."""
+        logging.info("Début de la récupération de la liste des url")
         os.makedirs(f"metadata/{self.source}", exist_ok=True)
         self.cle_api = self.metadata[self.key]["cle_api"]
         url = []
@@ -55,11 +60,11 @@ class SourceProcess:
                          (d["url"].endswith("xml") or d["url"].endswith("json"))]
         self.metadata[self.key]["url"] = url
         self.url = self.metadata[self.key]["url"]
-        logging.info(f"Récupération des url OK")
+        logging.info("Récupération des url OK")
 
     def get(self):
-        """Étape get qui permet le lavage du dossier sources/{self.source} et la récupération de l'esnemble des
-        fichiers présents sur chaque url."""
+        """Étape get qui permet le lavage du dossier sources/{self.source} et la récupération de
+        l'esnemble des fichiers présents sur chaque url."""
         logging.info("  ÉTAPE GET")
         # Lavage des dossiers dans sources
         logging.info(f"Début du nettoyage de sources/{self.source}")
@@ -75,8 +80,8 @@ class SourceProcess:
         logging.info(f"Téléchargement : {len(self.url)} fichier(s) OK")
 
     def convert(self):
-        """Étape de conversion des fichiers qui supprime les ' et concatène les fichiers présents dans {self.source}
-        dans un seul DataFrame"""
+        """Étape de conversion des fichiers qui supprime les ' et concatène les fichiers présents
+        dans {self.source} dans un seul DataFrame"""
         logging.info("  ÉTAPE CONVERT")
         # suppression des '
         count = 0
@@ -91,7 +96,7 @@ class SourceProcess:
             with open(file_path, "w") as file:
                 file.write(chaine)
         if count != len(self.url):
-            logging.warning(f"Nombre de fichiers en local inégal au nombre d'url trouvé")
+            logging.warning("Nombre de fichiers en local inégal au nombre d'url trouvé")
         logging.info(f"Début de convert: mise au format DataFrame de {self.source}")
         if self.format == 'xml':
             li = []
@@ -114,13 +119,14 @@ class SourceProcess:
             df = pd.concat(li)
             df = df.reset_index(drop=True)
             self.df = df
-        logging.info(f"Conversion OK")
+        logging.info("Conversion OK")
         logging.info(f"Nombre de marchés dans {self.source} après convert : {len(self.df)}")
 
     def fix(self):
-        """Étape fix qui crée la colonne source dans le DataFrame et qui supprime les doublons purs."""
+        """Étape fix qui crée la colonne source dans le DataFrame et qui supprime les doublons
+        purs."""
         logging.info("  ÉTAPE FIX")
-        logging.info(f"Début de fix: Ajout de la colonne source et suppression des duplicatas de {self.source}")
+        logging.info(f"Début de fix: Ajout source et suppression des doublons de {self.source}")
         # Ajout de source
         self.df = self.df.assign(source=self.source)
         # Suppression des doublons
