@@ -29,8 +29,8 @@ Certaines données sources n'étant pas valides, nous corrigeons ce qui peut êt
 
 **4. CONTINUOUS INTEGRATION**
 
-Dans l'objectif de remplacement de decp-rama, decp-rama-v2 dispose d'une CI qui permet de publier automatiquement le résultat de son script de manière journalière. Tous les jours, la CI :
-- Lance un docker via Github Action qui s'appuie sur une image publiée sur DockerHub. Cette image est générée via le DockerFile dans le dossier docker/
+Dans l'objectif de remplacement de decp-rama, decp-rama-v2 dispose d'une CI qui permet de publier automatiquement le résultat de son script de manière journalière. Tous les jours, la CI va :
+- Lancer un docker via Github Action qui s'appuie sur une image publiée sur DockerHub. Cette image est générée via le DockerFile dans le dossier docker/
 et publiée grâce au script publish_docker.sh.
 - Récuperer le dossier github via actions/checkout@v2.
 - Installer les dépendances nécessaires aux scripts de decp-rama-v2.
