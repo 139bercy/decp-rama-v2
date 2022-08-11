@@ -50,5 +50,6 @@ Pour terminer le projet decp-rama-v2 et continuer à l'améliorer, voici les dif
 - La source BFC n'est plus traitée du fait d'erreurs dans la manière de récupérer les URL à get.
 - Il faudrait prendre en compte que les drop duplicate inter-sources suppriment les deuxièmes lignes et font donc un "choix" de source arbitraire. Peut-être qu'un .agg serait propice afin de garder l'information.
 - La partie qui est la plus consommatrice de performance aujourd'hui est le téléchargement des données. Il faudrait mettre en place un système de cache des fichiers qui ne sont plus mis à jour afin de gagner en temps d'exécution. Le fichier global de stock pourrait être retéléchargé tous les mois puis mis à jour tous les jours via la publication d'un fichier journalier par exemple.
+- Mettre en place la publication des données qui sont aujourd'hui uniquement publiées sur le serveur ftp de data.eco. 
 
 Si vous avez connaissance de données essentielles de la commande publique facilement accessibles (téléchargement en masse possible) et qui ne sont pas encore identifiées dans le fichier metadata.json, merci de [nous en informer](#contact).
