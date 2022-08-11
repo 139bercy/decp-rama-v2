@@ -36,7 +36,7 @@ et publiée grâce au script publish_docker.sh.
 - Lancer main.py
 - Publier sur le serveur FTP de economie.gouv dans le dossier decp/test le résultat du script : results/decp.json
 
-** INSTRUCTIONS POUR FAIRE TOURNER EN LOCAL **
+**INSTRUCTIONS POUR FAIRE TOURNER EN LOCAL**
 
 Pour faire tourner en local decp-rama-v2 et obtenir le fichier decp.json aggrégé directement sur votre machine il faut :
 - Installer les dépendances dans présentes dans requirements.txt
@@ -44,7 +44,7 @@ Pour faire tourner en local decp-rama-v2 et obtenir le fichier decp.json aggrég
 - Lancer ```python main.py``` dans le dossier principal
 - Le fichier final decp.json se trouvera dans le fichier resultats/
 
-** FIX A EFFECTUER ET PISTES D'AMÉLIORATION **
+**FIX A EFFECTUER ET PISTES D'AMÉLIORATION**
 
 Pour terminer le projet decp-rama-v2 et continuer à l'améliorer, voici les différents problèmes et sources d'améliorations :
 - La source BFC n'est plus traitée du fait d'erreurs dans la manière de récupérer les URL à get.
