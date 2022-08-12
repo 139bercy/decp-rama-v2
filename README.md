@@ -21,18 +21,18 @@ Certaines données sources n'étant pas valides, nous corrigeons ce qui peut êt
 
 **4. ETAPE GLOBAL**
 
-- **merge_all :** On aggrège les DataFrame en un DataFrame unique.
-- **drop_duplicate :** On supprime les lignes dupliquées (marchés présents dans plusieurs sources de données).
-- **export_to_xml :** On exporte au format XML réglementaire.
-- **export_to_json :** On exporte au format JSON réglementaire.
+- **merge_all :** On aggrège les DataFrame en un DataFrame unique
+- **drop_duplicate :** On supprime les lignes dupliquées (marchés présents dans plusieurs sources de données)
+- **export_to_xml :** On exporte au format XML réglementaire
+- **export_to_json :** On exporte au format JSON réglementaire
 
 **5. CONTINUOUS INTEGRATION**
 
 Dans l'objectif de remplacement de decp-rama, decp-rama-v2 dispose d'une CI qui permet de publier automatiquement le résultat de son script de manière journalière. Tous les jours, la CI va :
 - Lancer un docker via Github Action qui s'appuie sur une image publiée sur DockerHub. Cette image est générée via le DockerFile dans le dossier docker/
-et publiée grâce au script publish_docker.sh.
-- Récuperer le dossier github via actions/checkout@v2.
-- Installer les dépendances nécessaires aux scripts de decp-rama-v2.
+et publiée grâce au script publish_docker.sh
+- Récuperer le dossier github via actions/checkout@v2
+- Installer les dépendances nécessaires aux scripts de decp-rama-v2
 - Lancer main.py
 - Publier sur le serveur FTP de economie.gouv dans le dossier decp/test le résultat du script : results/decp.json
 
@@ -47,9 +47,9 @@ Pour faire tourner en local decp-rama-v2 et obtenir le fichier decp.json aggrég
 **FIX A EFFECTUER ET PISTES D'AMÉLIORATION**
 
 Pour terminer le projet decp-rama-v2 et continuer à l'améliorer, voici les différents problèmes et sources d'améliorations :
-- La source BFC n'est plus traitée du fait d'erreurs dans la manière de récupérer les URL à get.
-- Il faudrait prendre en compte que les drop duplicate inter-sources suppriment les deuxièmes lignes et font donc un "choix" de source arbitraire. Peut-être qu'un .agg serait propice afin de garder l'information.
-- La partie qui est la plus consommatrice de performance aujourd'hui est le téléchargement des données. Il faudrait mettre en place un système de cache des fichiers qui ne sont plus mis à jour afin de gagner en temps d'exécution. Le fichier global de stock pourrait être retéléchargé tous les mois puis mis à jour tous les jours via la publication d'un fichier journalier par exemple.
-- Mettre en place la publication des données qui sont aujourd'hui uniquement publiées sur le serveur ftp de data.eco. 
+- La source BFC n'est plus traitée du fait d'erreurs dans la manière de récupérer les URL à get
+- Il faudrait prendre en compte que les drop duplicate inter-sources suppriment les deuxièmes lignes et font donc un "choix" de source arbitraire. Peut-être qu'un .agg serait propice afin de garder l'information. Ou supprimer la colonne source lors de la publication
+- La partie qui est la plus consommatrice de performance aujourd'hui est le téléchargement des données. Il faudrait mettre en place un système de cache des fichiers qui ne sont plus mis à jour afin de gagner en temps d'exécution. Le fichier global de stock pourrait être retéléchargé tous les mois puis mis à jour tous les jours via la publication d'un fichier journalier par exemple
+- Mettre en place la publication des données qui sont aujourd'hui uniquement publiées sur le serveur ftp de data.eco
 
 Si vous avez connaissance de données essentielles de la commande publique facilement accessibles (téléchargement en masse possible) et qui ne sont pas encore identifiées dans le fichier metadata.json, merci de [nous en informer](#contact).
