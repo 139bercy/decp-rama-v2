@@ -102,10 +102,21 @@ class GlobalProcess:
                     marche['modifications'] = [marche['modifications'][0]['modification']]
             if 'concessionnaires' in marche.keys() and marche[
                     'concessionnaires'] is not None and len(marche['concessionnaires']) > 0:
-                if type(marche['concessionnaires'][0]['concessionnaire']) == list:
-                    marche['concessionnaires'] = marche['concessionnaires'][0]['concessionnaire']
-                else:
-                    marche['concessionnaires'] = [marche['concessionnaires'][0]['concessionnaire']]
+                # On s'est rendu compte que dans les concessionnaires provenant de la source "e-marchespublics" 
+                # ont un format particulier qui ne colle pas avec le traitement plus classique. 
+                # Ils n'ont pas une clef "concessionnaire" puis les infos, mais directement les infos
+                # Donc aller chercher la clef 'concessionnaire' bug. 
+                if len(marche['concessionnaires'][0].keys()) == 1: # Dans le cas d'un process habituel des données
+                    if type(marche['concessionnaires'][0]['concessionnaire']) == list:
+                        marche['concessionnaires'] = marche['concessionnaires'][0]['concessionnaire']
+                    else:
+                        marche['concessionnaires'] = [marche['concessionnaires'][0]['concessionnaire']]
+                if len(marche['concessionnaires'][0].keys()) == 3: # Dans le cas de emarchés
+                    if type(marche['concessionnaires'][0]) == list: # A priori, on n'aura jamais de liste, mais je laisse le même schéma que le traitement classiques
+                        marche['concessionnaires'] = marche['concessionnaires'][0]
+                    else:
+                        marche['concessionnaires'] = [marche['concessionnaires'][0]]
+
         with open("results/decp.json", 'w') as f:
             json.dump(dico, f, indent=2, ensure_ascii=False)
         json_size = os.path.getsize(r'results/decp.json')
