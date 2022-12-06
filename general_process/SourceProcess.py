@@ -12,7 +12,7 @@ pd.options.mode.chained_assignment = None
 class SourceProcess:
     """La classe SourceProcess est une classe abstraite qui sert de parent à chaque classe enfant de
     sources. Elle sert à définir le cas général des étapes de traitement d'une source : création des
-    varaibles de classe (__init__), nettoyage des dossiers de la source (_clean_metadata_folder),
+    variables de classe (__init__), nettoyage des dossiers de la source (_clean_metadata_folder),
     récupération des URLs (_url_init), get, convert et fix."""
 
     def __init__(self, key):
@@ -64,9 +64,9 @@ class SourceProcess:
 
     def get(self):
         """Étape get qui permet le lavage du dossier sources/{self.source} et la récupération de
-        l'esnemble des fichiers présents sur chaque url."""
+        l'ensemble des fichiers présents sur chaque url."""
         logging.info("  ÉTAPE GET")
-        # Lavage des dossiers dans sources
+        # Lavage des dossiers dans "sources"
         logging.info(f"Début du nettoyage de sources/{self.source}")
         if os.path.exists(f"sources/{self.source}"):
             shutil.rmtree(f"sources/{self.source}")
