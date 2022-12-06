@@ -104,7 +104,11 @@ class SourceProcess:
                 with open(
                         f"sources/{self.source}/{self.file_name[i]}.{self.format}") as xml_file:
                     dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
-                    df = pd.DataFrame.from_dict(dico['marches']['marche'])
+                    if dico['marches'] is not None:
+                        df = pd.DataFrame.from_dict(dico['marches']['marche'])
+                    else:
+                        logging.warning(f"Le fichier {self.file_name[i]} est vide, il est ignoré")
+
                 li.append(df)
             df = pd.concat(li)
             df = df.reset_index(drop=True)
