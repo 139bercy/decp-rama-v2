@@ -1,6 +1,7 @@
 from general_process.SourceProcess import SourceProcess
 import json
 
+
 class AifeProcess(SourceProcess):
     def __init__(self):
         super().__init__("aife")
@@ -24,4 +25,3 @@ class AifeProcess(SourceProcess):
             lambda x: x if x is None else json.loads(json.dumps(x)))
         self.df['modifications'] = self.df['modifications'].apply(
             lambda x: x if type(x) == list else [] if x is None else [x])
-
