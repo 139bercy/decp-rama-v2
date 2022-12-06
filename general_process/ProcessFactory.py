@@ -29,7 +29,7 @@ class ProcessFactory:
     def run_processes(self):
         """Création d'une boucle (1 source=1 itération) qui appelle chacun des processus de chaque source."""
         for process in self.processes:
-            logging.info(f"------------------------------{repr(process).__name__}------------------------------")
+            logging.info(f"------------------------------{process.__name__}------------------------------")
             p = process()
             p.get()
             p.convert()
@@ -38,7 +38,7 @@ class ProcessFactory:
 
     def run_process(self):
         """Lance un seul process pour tester"""
-        logging.info(f"------------------------------{repr(self.process.__name__)}------------------------------")
+        logging.info(f"------------------------------{self.process.__name__}------------------------------")
         p = self.process()
         p.get()
         p.convert()
