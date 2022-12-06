@@ -1,13 +1,24 @@
 from general_process.ProcessFactory import ProcessFactory
 from general_process.GlobalProcess import GlobalProcess
 import logging
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-P', dest='process', type=str, help='run a specific process')
+args = parser.parse_args()
 
 
 def main():
     """La fonction main() appelle tour à tour les processus spécifiques (ProcessFactory.py/SourceProcess.py) et les
     étapes du Global Process (GlobalProcess.py)."""
-    p = ProcessFactory()
-    p.run_processes()
+
+    # get arguments from command line to know which process to run, if there is no arguments run all processes
+    if args.process:
+        p = ProcessFactory(args.process)
+        p.run_process()
+    else:
+        p = ProcessFactory()
+        p.run_processes()
     gp = GlobalProcess()
     gp.dataframes = p.dataframes
     gp.merge_all()
