@@ -8,8 +8,8 @@ import logging
 
 class GlobalProcess:
     """La classe GlobalProcess est une classe qui définit les étapes de traitement une fois toutes
-    les étapes pour toutes les sources éffectuées : création des variables de la classe (__init__),
-    fusion des sources dans un seul DataFrame (merge_all), supression des doublons (drop_duplicate)
+    les étapes pour toutes les sources effectuées : création des variables de la classe (__init__),
+    fusion des sources dans un seul DataFrame (merge_all), suppression des doublons (drop_duplicate)
     et l'exportation des données en json pour publication (export)."""
 
     def __init__(self):
@@ -20,7 +20,7 @@ class GlobalProcess:
         self.dataframes = []
 
     def merge_all(self):
-        """Étape merge all qui permet la fusion des DataFrames de chaqune des sources en un seul."""
+        """Étape merge all qui permet la fusion des DataFrames de chacune des sources en un seul."""
         logging.info("  ÉTAPE MERGE ALL")
         logging.info("Début de l'étape Merge des Dataframes")
         self.df = pd.concat(self.dataframes, ignore_index=True)
