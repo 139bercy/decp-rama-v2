@@ -17,7 +17,7 @@ jobs:
             . venv/bin/activate
             main.py
 
-workflow:
+workflows:
   version: 2
   main:
     jobs:
