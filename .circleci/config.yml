@@ -37,7 +37,9 @@ jobs:
               name: Run tests
               command: |
                   . venv/bin/activate
-                  main.py
+                  python main.py
+          - store_artifacts:
+              path: /results
 
 workflows:
   version: 2
