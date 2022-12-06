@@ -15,17 +15,32 @@ import logging
 
 class ProcessFactory:
 
-    def __init__(self):
+    def __init__(self, process=None):
         """Création de la liste des Processus qui correspondent chacun à une classe importée en début de document."""
         self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, MegaProcess]
         self.dataframes = []
+        # si on lance main avec un process spécifié :
+        if process:
+            for proc in self.processes:
+                if proc.__name__ == process:
+                    self.process = proc
+                    break
 
     def run_processes(self):
         """Création d'une boucle (1 source=1 itération) qui appelle chacun des processus de chaque source."""
         for process in self.processes:
-            logging.info(f"------------------------------{repr(process).split('.')[-2]}------------------------------")
+            logging.info(f"------------------------------{repr(process).__name__}------------------------------")
             p = process()
             p.get()
             p.convert()
             p.fix()
             self.dataframes.append(p.df)
+
+    def run_process(self):
+        """Lance un seul process pour tester"""
+        logging.info(f"------------------------------{repr(self.process.__name__)}------------------------------")
+        p = self.process()
+        p.get()
+        p.convert()
+        p.fix()
+        self.dataframes.append(p.df)
