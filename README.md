@@ -7,26 +7,26 @@ L'objectif de ce projet est d'identifier toutes les sources de DECP, les aggrég
 
 La procédure standard est la suivante pour chaque source de données :
 
-**1. ETAPE GET**
+### **1. ETAPE GET**
 
 Nous téléchargeons les données d'une source dans son format d'origine, XML ou JSON (les DECP n'existent pas dans d'autres formats) dans le dossier /sources dans un répertoire spécifique à la source des données.
 
-**2. ETAPE CONVERT**
+### **2. ETAPE CONVERT**
 
 Nous convertissons par la suite en DataFrame afin de faire les opérations de nettoyage et d'aggrégation.
 
-**3. ETAPE FIX**
+### **3. ETAPE FIX**
 
 Certaines données sources n'étant pas valides, nous corrigeons ce qui peut être corrigé (par exemple le format d'une date). Si certains champs manquent dans les données, nous avons pris le parti de les garder et de signaler ces anomalies. On supprime également les lignes dupliquées (marchés présents plusieurs fois dans la source de données).
 
-**4. ETAPE GLOBAL**
+### **4. ETAPE GLOBAL**
 
 - **merge_all :** On agrège les DataFrame en un DataFrame unique
 - **drop_duplicate :** On supprime les lignes dupliquées (marchés présents dans plusieurs sources de données)
 - **export_to_xml :** On exporte au format XML réglementaire
 - **export_to_json :** On exporte au format JSON réglementaire
 
-**5. CONTINUOUS INTEGRATION**
+### **5. CONTINUOUS INTEGRATION**
 
 Dans l'objectif de remplacement de decp-rama, decp-rama-v2 dispose d'une CI qui permet de publier automatiquement le résultat de son script de manière journalière. Tous les jours, la CI va :
 - Lancer un docker via Github Action qui s'appuie sur une image publiée sur DockerHub. Cette image est générée via le DockerFile dans le dossier docker/
@@ -36,7 +36,7 @@ et publiée grâce au script publish_docker.sh
 - Lancer main.py
 - Publier sur le serveur FTP de data.economie.gouv dans le dossier decp/test le résultat du script : results/decp.json
 
-**INSTRUCTIONS POUR FAIRE TOURNER EN LOCAL**
+## **INSTRUCTIONS POUR FAIRE TOURNER EN LOCAL**
 
 Pour faire tourner en local decp-rama-v2 et obtenir le fichier decp.json aggrégé directement sur votre machine il faut :
 - Installer les dépendances présentes dans requirements.txt
@@ -44,7 +44,9 @@ Pour faire tourner en local decp-rama-v2 et obtenir le fichier decp.json aggrég
 - Lancer ```python main.py``` dans le dossier principal
 - Le fichier final decp.json se trouvera dans le fichier resultats/
 
-**FIX A EFFECTUER ET PISTES D'AMÉLIORATION**
+Possibilité de lancer un seul process pour les tests : ```python main.py -P [process_name]```
+
+## **FIX A EFFECTUER ET PISTES D'AMÉLIORATION**
 
 Pour terminer le projet decp-rama-v2 et continuer à l'améliorer, voici les différents problèmes et sources d'améliorations :
 - La source BFC n'est plus traitée du fait d'erreurs dans la manière de récupérer les URL à get
