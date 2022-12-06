@@ -100,12 +100,15 @@ class GlobalProcess:
                     marche['modifications'] = marche['modifications'][0]['modification']
                 else:
                     marche['modifications'] = [marche['modifications'][0]['modification']]
+            """
+            A servit à un moment pour régler un soucis avec concessionaire mais la clef à disparue depuis
             if 'concessionnaires' in marche.keys() and marche[
                     'concessionnaires'] is not None and len(marche['concessionnaires']) > 0:
                 if type(marche['concessionnaires'][0]['concessionnaire']) == list:
                     marche['concessionnaires'] = marche['concessionnaires'][0]['concessionnaire']
                 else:
                     marche['concessionnaires'] = [marche['concessionnaires'][0]['concessionnaire']]
+            """
         with open("results/decp.json", 'w') as f:
             json.dump(dico, f, indent=2, ensure_ascii=False)
         json_size = os.path.getsize(r'results/decp.json')
