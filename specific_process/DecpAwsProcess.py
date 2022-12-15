@@ -22,7 +22,7 @@ class DecpAwsProcess(SourceProcess):
 
     def get(self):
         """ Un peu particulier, on pointe sur data eco"""
-        api_key = os.environ.get("API_KEY")
+        api_key = str(os.environ.get("API_KEY_Gaspard"))
         os.makedirs(f"sources/{self.source}", exist_ok=True)
         
         wget.download(self.url_source+str(api_key), self.local_path)
