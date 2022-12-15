@@ -77,6 +77,7 @@ class SourceProcess:
         self.file_name = [f"{self.metadata[self.key]['code']}_{i}" for i in range(len(self.url))]
         os.makedirs(f"sources/{self.source}", exist_ok=True)
         for i in range(len(self.url)):
+            print(self.url[i])
             wget.download(self.url[i], f"sources/{self.source}/{self.file_name[i]}.{self.format}")
         logging.info(f"Téléchargement : {len(self.url)} fichier(s) OK")
 
