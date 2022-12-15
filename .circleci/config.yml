@@ -2,7 +2,7 @@ version: 2.1
 jobs:
     install_dependencies:
         docker:
-            - image: circleci/python:3.9.4
+            - image: circleci/python:3.7.4
         steps:
             - checkout
             - restore_cache:
@@ -21,7 +21,7 @@ jobs:
 
     test_code:
         docker:
-            - image: circleci/python:3.9.4
+            - image: circleci/python:3.7.4
         steps:
             - checkout
             - restore_cache:
@@ -38,7 +38,7 @@ jobs:
                 path: /results
     ramav2:
         docker:
-            - image: circleci/python:3.9.4
+            - image: circleci/python:3.7.4
         steps:
             - checkout
             - attach_workspace:
