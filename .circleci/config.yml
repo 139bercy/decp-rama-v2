@@ -58,7 +58,7 @@ jobs:
                     - "results/decpv2.json"
     sendv2:
         docker:
-            - image
+            - image: circleci/python:3.9.4
         steps:
             - attach_workspace:
                 at: ~/project
