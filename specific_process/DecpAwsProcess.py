@@ -26,7 +26,6 @@ class DecpAwsProcess(SourceProcess):
         os.makedirs(f"sources/{self.source}", exist_ok=True)
         
         wget.download(self.url_source+str(api_key), self.local_path)
-        
 
     def convert(self):
         with open(self.local_path, "r") as f:
