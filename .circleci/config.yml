@@ -56,4 +56,8 @@ workflows:
   main:
     jobs:
       - install_dependencies
-      - ramav2
+      - ramav2:
+            context:
+                - decp-rama-context
+            requires:
+                - install_dependencies
