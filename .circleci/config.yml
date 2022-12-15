@@ -1,47 +1,59 @@
 version: 2.1
 jobs:
-  install_dependencies:
-      docker:
-          - image: circleci/python:3.7.4
-      steps:
-          - checkout
-          - restore_cache:
-              keys:
-                  - v1-dependencies-{{ checksum "requirements.txt" }}
-          - run:
-              name: Install dependencies
-              command: |
-                  python -m venv venv
-                  . venv/bin/activate
-                  pip install -r requirements.txt
-          - save_cache:
-              key: v1-dependencies-{{ checksum "requirements.txt" }}
-              paths:
-                  - "venv"
+    install_dependencies:
+        docker:
+            - image: circleci/python:3.7.4
+        steps:
+            - checkout
+            - restore_cache:
+                keys:
+                    - v1-dependencies-{{ checksum "requirements.txt" }}
+            - run:
+                name: Install dependencies
+                command: |
+                    python -m venv venv
+                    . venv/bin/activate
+                    pip install -r requirements.txt
+            - save_cache:
+                key: v1-dependencies-{{ checksum "requirements.txt" }}
+                paths:
+                    - "venv"
 
-  test_code:
-      docker:
-          - image: circleci/python:3.7.4
-      steps:
-          - checkout
-          - restore_cache:
-              keys:
-                  - v1-dependencies-{{ checksum "requirements.txt" }}
-          - run:
-              name: Run script main.py
-              command: |
-                  . venv/bin/activate
-                  python main.py
-              no_output_timeout: 1h
+    test_code:
+        docker:
+            - image: circleci/python:3.7.4
+        steps:
+            - checkout
+            - restore_cache:
+                keys:
+                    - v1-dependencies-{{ checksum "requirements.txt" }}
+            - run:
+                name: Run script main.py
+                command: |
+                    . venv/bin/activate
+                    python main.py
+                no_output_timeout: 1h
 
-          - store_artifacts:
-              path: /results
+            - store_artifacts:
+                path: /results
+    ramav2:
+        docker:
+            - image: circleci/python:3.7.4
+        steps:
+            - checkout
+            - restore_cache:
+                keys:
+                    - v1-dependencies-{{ checksum "requirements.txt" }}
+            - run:
+                name: Run main.py
+                command: |
+                    . venv/bin/activate
+                    python main.py
+                no_output_timeout: 1h
 
 workflows:
   version: 2
   main:
     jobs:
       - install_dependencies
-      - test_code:
-          requires:
-            - install_dependencies
+      

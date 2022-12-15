@@ -24,6 +24,7 @@ class SourceProcess:
             self.metadata = json.load(f)
         self.source = self.metadata[self.key]["code"]
         self.format = self.metadata[self.key]["format"]
+        self.url_source = self.metadata[self.key]["url_source"]
         self.df = pd.DataFrame()
 
         # Lavage des dossiers de la source
@@ -101,14 +102,24 @@ class SourceProcess:
         if self.format == 'xml':
             li = []
             for i in range(count):
-                with open(
-                        f"sources/{self.source}/{self.file_name[i]}.{self.format}") as xml_file:
-                    dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
-                    if dico['marches'] is not None:
-                        df = pd.DataFrame.from_dict(dico['marches']['marche'])
-                    else:
-                        logging.warning(f"Le fichier {self.file_name[i]} est vide, il est ignoré")
-
+                try : 
+                    with open(
+                            f"sources/{self.source}/{self.file_name[i]}.{self.format}", encoding="utf-8") as xml_file:
+                            dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
+                except : 
+                    with open(
+                            f"sources/{self.source}/{self.file_name[i]}.{self.format}", encoding="utf-8") as xml_file:
+                        specials_caracters = [""] # Liste de caractères spéciaux qui ne passe pas.
+                        print(f"Du fichier {self.file_name[i]} sont retirés à la main les caractères spéciaux empêchant sa lecture")
+                        str_file = xml_file.read()
+                        for special in specials_caracters:
+                            str_file = str_file.replace(special, "")
+                        dico = xmltodict.parse(str_file, dict_constructor=dict)
+                        print('Fichier correctement transformé')
+                if dico['marches'] is not None:
+                    df = pd.DataFrame.from_dict(dico['marches']['marche'])
+                else:
+                    logging.warning(f"Le fichier {self.file_name[i]} est vide, il est ignoré")
                 li.append(df)
             df = pd.concat(li)
             df = df.reset_index(drop=True)
