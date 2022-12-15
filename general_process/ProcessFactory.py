@@ -34,7 +34,7 @@ class ProcessFactory:
         for process in self.processes:
             logging.info(f"------------------------------{process.__name__}------------------------------")
             p = process()
-            #p.get()
+            p.get()
             p.convert()
             p.fix()
             self.dataframes.append(p.df)
