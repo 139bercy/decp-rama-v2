@@ -61,7 +61,7 @@ jobs:
             - image
         steps:
             - attach_workspace:
-              at: ~/project
+                at: ~/project
             - run:
                 name: Transferts des données vers data eco
                 command: |
