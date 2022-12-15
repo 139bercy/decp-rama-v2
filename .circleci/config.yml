@@ -79,6 +79,6 @@ workflows:
                 - decp-rama-context
             requires:
                 - install_dependencies
-    - sendv2:
+      - sendv2:
             requires:
                 - ramav2
