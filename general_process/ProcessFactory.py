@@ -7,7 +7,7 @@ from specific_process.AifeProcess import AifeProcess
 from specific_process.EmarProcess import EmarProcess
 from specific_process.MegaProcess import MegaProcess
 from specific_process.DecpAwsProcess import DecpAwsProcess
-# from specific_process.MaxiProcess import MaxiProcess
+from specific_process.MaxiProcess import MaxiProcess
 # Le get ne marche pas plus on n'a pas accès au github # A regaredr
 from specific_process.BreProcess import BreProcess
 # Source non traitée pour l'instant
@@ -19,6 +19,7 @@ class ProcessFactory:
     def __init__(self, process=None):
         """Création de la liste des Processus qui correspondent chacun à une classe importée en début de document."""
         #self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, MegaProcess]
+        #self.processes = [MaxiProcess]
         self.processes = [DecpAwsProcess, BfcProcess, PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, MegaProcess]
         #self.processes = [PesProcess, LyonProcess]
         self.dataframes = []

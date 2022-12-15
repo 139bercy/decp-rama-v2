@@ -128,7 +128,7 @@ class GlobalProcess:
                 else:
                     marche['concessionnaires'] = [marche['concessionnaires'][0]['concessionnaire']]
             """
-        with open("results/decp.json", 'w') as f:
+        with open("results/decpv2.json", 'w') as f:
             json.dump(dico, f, indent=2, ensure_ascii=False)
         json_size = os.path.getsize(r'results/decp.json')
         logging.info("Exportation JSON OK")
