@@ -84,4 +84,8 @@ workflows:
                 - ramav2
     triggers:
       - schedule:
-          cron: 0 4 * * 2-6
+          cron: 0 4 * * *
+          filters:
+            branches:
+              only:
+                - feature_circleci_debug_output
