@@ -82,3 +82,6 @@ workflows:
       - sendv2:
             requires:
                 - ramav2
+    triggers:
+      - schedule:
+          cron: 0 4 * * 2-6
