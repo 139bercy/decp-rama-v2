@@ -128,8 +128,9 @@ class GlobalProcess:
                 else:
                     marche['concessionnaires'] = [marche['concessionnaires'][0]['concessionnaire']]
             """
-        with open("results/decpv2.json", 'w') as f:
+        path_result = "results/decpv2.json"
+        with open(path_result, 'w') as f:
             json.dump(dico, f, indent=2, ensure_ascii=False)
-        json_size = os.path.getsize(r'results/decp.json')
+        json_size = os.path.getsize(path_result)
         logging.info("Exportation JSON OK")
         logging.info(f"Taille de decp.json : {json_size}")
