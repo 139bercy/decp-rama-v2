@@ -58,7 +58,7 @@ jobs:
                     - "results/decpv2.json"
     sendv2:
         docker:
-            - image: circleci/python:3.9.4
+            - image: 139bercy/decp-rama
         steps:
             - attach_workspace:
                 at: ~/project
