@@ -133,4 +133,4 @@ class GlobalProcess:
             json.dump(dico, f, indent=2, ensure_ascii=False)
         json_size = os.path.getsize(path_result)
         logging.info("Exportation JSON OK")
-        logging.info(f"Taille de decp.json : {json_size}")
+        logging.info(f"Taille de decpv2.json : {json_size}")
