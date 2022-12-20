@@ -34,13 +34,12 @@ class AwsProcess(SourceProcess):
                         if 'titulaires' in x[0]['modification'][i]:
                             z = x[0]['modification'][i]['titulaires']
                             x[0]['modification'][i]['titulaires'] = \
-                                (dict({'titulaire': [y for y in z]}) if len(z) > 1 else {'titulaire': z[0]})
+                                ([y for y in z]) if len(z) > 1 else [z[0]]
                 else:
                     if 'titulaires' in x[0]['modification']:
                         z = x[0]['modification']['titulaires']
                         # Dans les données si il y a un champ titulaire vide, ça crash. Corrigeons ça
                         if z != []:
                             x[0]['modification']['titulaires'] = \
-                                (dict({'titulaire': [y for y in z]}) if len(z) > 1 else {'titulaire': z[0]})
+                                ([y for y in z]) if len(z) > 1 else [z[0]]
                         # Sinon on fait rien car le champ titulaire est vide.
-

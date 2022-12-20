@@ -21,7 +21,7 @@ class ProcessFactory:
         #self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, MegaProcess]
         #self.processes = [MaxiProcess]
         self.processes = [DecpAwsProcess, BfcProcess, PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, MegaProcess, BreProcess]
-        #self.processes = [PesProcess, LyonProcess]
+        #self.processes = [PesProcess, LyonProcess, EmarProcess]
         self.dataframes = []
         # si on lance main avec un process spécifié :
         if process:
@@ -35,7 +35,7 @@ class ProcessFactory:
         for process in self.processes:
             logging.info(f"------------------------------{process.__name__}------------------------------")
             p = process()
-            p.get()
+            #p.get()
             p.convert()
             p.fix()
             self.dataframes.append(p.df)
