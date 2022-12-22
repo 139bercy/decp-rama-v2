@@ -7,7 +7,7 @@ from saagieapi import SaagieApi
 # Credentials en provenance de la CI
 ACCESS_KEY = os.environ.get("ACCESS_KEY")
 SECRET_KEY = os.environ.get("SECRET_KEY")
-USER =os.environ.get("USER_SAAGIE")
+USER_SAAGIE =os.environ.get("USER_SAAGIE")
 PASSWORD = os.environ.get("PASSWORD_SAAGIE")
 ENDPOINT_S3 = os.environ.get("ENDPOINT_S3")
 PROJECT_NAME = os.environ.get("PROJECT_NAME")
@@ -34,8 +34,6 @@ for file in files_to_add:
     zipObj.write(file)
 zipObj.close()
 
-print(USER)
-print(PASSWORD)
 saagieapi =  SaagieApi.easy_connect(url_saagie_platform="https://mefsin-workspace.pcv.saagie.io/projects/platform/1/project/4fbca8d8-b3a5-4f63-97f1-b2ca6362a2b2/jobs",
     user=USER,
     password=PASSWORD)
