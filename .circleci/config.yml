@@ -45,8 +45,8 @@ jobs:
             - run:
                 name: Upload du projet sur Saagie project DECP-RAMA-V2
                 command: |
-                . venv/bin/activate
-                python connect_saagie.py
+                    . venv/bin/activate
+                    python connect_saagie.py
 
 workflows:
   version: 2
