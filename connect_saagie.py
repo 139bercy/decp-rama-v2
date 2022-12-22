@@ -23,10 +23,12 @@ for file in os.listdir(specific_path): # On ajoute tout les files de specific pr
 general_path = "general_process"
 for file in os.listdir(general_path):
     files_to_add.append(os.path.join(general_path, file))
-# Et finalement metadata
+# Puiq metadata
 files_to_add.append("metadata/metadata.json")
 # Puis main.py
 files_to_add.append("main.py")
+# Et finalement les requirements
+files_to_add.append("requirements.txt")
 
 # Maintenant, on zip tout ces fichiers
 zipObj = ZipFile(ZIP_NAME, "w")
