@@ -40,7 +40,7 @@ jobs:
                     - "results/decpv2.json"
     upload_saagie:
         docker:
-            - image: 139bercy/decp-rama
+            - image: circleci/python:3.7.4
         steps:
             - checkout
             - restore_cache:
