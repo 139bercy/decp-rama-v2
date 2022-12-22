@@ -18,24 +18,6 @@ jobs:
                 key: v1-dependencies-{{ checksum "requirements.txt" }}
                 paths:
                     - "venv"
-
-    test_code:
-        docker:
-            - image: circleci/python:3.7.4
-        steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - v1-dependencies-{{ checksum "requirements.txt" }}
-            - run:
-                name: Run script main.py
-                command: |
-                    . venv/bin/activate
-                    python main.py
-                no_output_timeout: 1h
-
-            - store_artifacts:
-                path: /results
     ramav2:
         docker:
             - image: circleci/python:3.7.4
@@ -56,36 +38,23 @@ jobs:
                 root: ~/project
                 paths:
                     - "results/decpv2.json"
-    sendv2:
+    upload_saagie:
         docker:
             - image: 139bercy/decp-rama
         steps:
-            - attach_workspace:
-                at: ~/project
             - run:
-                name: Transferts des données vers data eco
+                name: Upload du projet sur Saagie project DECP-RAMA-V2
                 command: |
-                    lftp -u ${DEPLOY_USER}:${DEPLOY_PASSWORD} ${DEPLOY_HOST} -e "set ftp:ssl-force true ; set ssl:verify-certificate false; cd decp ; put results/decpv2.json ; quit"
-
-
+                . venv/bin/activate
+                python connect_saagie.py
 
 workflows:
   version: 2
   main:
     jobs:
       - install_dependencies
-      - ramav2:
+      - upload_saagie:
             context:
-                - decp-rama-context
+                - decp-rama-v2
             requires:
                 - install_dependencies
-      - sendv2:
-            requires:
-                - ramav2
-    triggers:
-      - schedule:
-          cron: 0 4 * * *
-          filters:
-            branches:
-              only:
-                - feature_circleci_debug_output
