@@ -7,7 +7,7 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - v1-dependencies-{{ checksum "requirements.txt" }}
+                    - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
             - run:
                 name: Install dependencies
                 command: |
@@ -15,7 +15,7 @@ jobs:
                     . venv/bin/activate
                     pip install -r requirements.txt
             - save_cache:
-                key: v1-dependencies-{{ checksum "requirements.txt" }}
+                key: - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
                 paths:
                     - "venv"
     ramav2:
@@ -42,6 +42,9 @@ jobs:
         docker:
             - image: 139bercy/decp-rama
         steps:
+            - restore_cache:
+                keys:
+                    - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
             - run:
                 name: Upload du projet sur Saagie project DECP-RAMA-V2
                 command: |
