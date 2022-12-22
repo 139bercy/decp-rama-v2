@@ -35,7 +35,7 @@ for file in files_to_add:
 zipObj.close()
 
 saagieapi =  SaagieApi.easy_connect(url_saagie_platform="https://mefsin-workspace.pcv.saagie.io/projects/platform/1/project/4fbca8d8-b3a5-4f63-97f1-b2ca6362a2b2/jobs",
-    user=USER,
+    user=USER_SAAGIE,
     password=PASSWORD)
 
 
