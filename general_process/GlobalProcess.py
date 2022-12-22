@@ -5,7 +5,7 @@ import os
 from datetime import date
 import pickle
 import logging
-
+import boto3
 
 class GlobalProcess:
     """La classe GlobalProcess est une classe qui définit les étapes de traitement une fois toutes
@@ -189,3 +189,20 @@ class GlobalProcess:
         json_size = os.path.getsize(path_result)
         logging.info("Exportation JSON OK")
         logging.info(f"Taille de decpv2.json : {json_size}")
+    
+    def upload_s3():
+        """
+        Cette fonction exporte decpv2 sur le S3 decp.
+        """
+        ACCESS_KEY = os.environ.get("ACCESS_KEY")
+        SECRET_KEY = os.environ.get("SECRET_KEY")
+        ENDPOINT_S3 = os.environ.get("ENDPOINT_S3")
+        session = boto3.session.Session()
+        client = session.client(
+            service_name='s3',
+            aws_access_key_id=ACCESS_KEY,
+            aws_secret_access_key=SECRET_KEY,
+            region_name="gra",
+            endpoint_url="https://"+str(ENDPOINT_S3)
+        )
+        client.upload_file(os.path.join("results", "decpv2.json"), "decp", "decpv2.json")
