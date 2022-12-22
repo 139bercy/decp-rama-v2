@@ -46,7 +46,7 @@ try:
 except:
     print(f"Le jobs {JOB_NAME} n existe pas. On le créé")
     id_projet = saagieapi.projects.get_id(PROJECT_NAME)
-    saagieapi.jobs.create(job_name=JOB_NAME, file=ZIP_NAME, command_line="python3 main.py", project_d=id_projet,
+    saagieapi.jobs.create(job_name=JOB_NAME, file=ZIP_NAME, command_line="python3 main.py", project_id=id_projet,
     category='Extraction',
     technology='python',# technology id corresponding to your context.id in your technology catalog definition
     technology_catalog='Saagie',
