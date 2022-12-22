@@ -42,6 +42,7 @@ jobs:
         docker:
             - image: 139bercy/decp-rama
         steps:
+            - checkout
             - restore_cache:
                 keys:
                     - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
