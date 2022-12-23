@@ -207,4 +207,4 @@ class GlobalProcess:
             region_name="gra",
             endpoint_url="https://"+str(ENDPOINT_S3)
         )
-        client.upload_file(os.path.join("results", "decpv2.json"), BUCKET_NAME, "decpv2.json")
+        client.upload_file(os.path.join("results", "decpv2.json"), BUCKET_NAME, "data/decpv2.json")
