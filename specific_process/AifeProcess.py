@@ -30,7 +30,7 @@ class AifeProcess(SourceProcess):
                 if "titulaires" in x_.keys():
                     if type(x_["titulaires"])==dict:
                         x_['titulaires'] = x_['titulaires']['titulaire']
-                    print(x)
+                    
             return x
                 
         self.df['titulaires'] = self.df['titulaires'].apply(
