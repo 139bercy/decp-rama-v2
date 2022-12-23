@@ -184,6 +184,7 @@ class GlobalProcess:
                     marche['concessionnaires'] = [marche['concessionnaires'][0]['concessionnaire']]
             """
         path_result = "results/decpv2.json"
+        os.makedirs("results", exist_ok=True)
         with open(path_result, 'w') as f:
             json.dump(dico, f, indent=2, ensure_ascii=False)
         json_size = os.path.getsize(path_result)
