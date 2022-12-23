@@ -43,7 +43,7 @@ saagieapi =  SaagieApi.easy_connect(url_saagie_platform="https://mefsin-workspac
 
 try:
     id_job = saagieapi.jobs.get_id(project_name=PROJECT_NAME, job_name=JOB_NAME)
-    saagieapi.jobs.upgrade(job_id=id_job, file=ZIP_NAME, command_line="python3 main.py")
+    saagieapi.jobs.upgrade(job_id=id_job, file=ZIP_NAME, command_line="python3 main.py", runtime_version='3.9')
     print('Job upgrade')
 except:
     print(f"Le jobs {JOB_NAME} n existe pas. On le créé")
