@@ -33,8 +33,12 @@ class AwsProcess(SourceProcess):
                     for i in range(len(y)):
                         if 'titulaires' in x[0]['modification'][i]:
                             z = x[0]['modification'][i]['titulaires']
-                            x[0]['modification'][i]['titulaires'] = \
-                                ([y for y in z]) if len(z) > 1 else [z[0]]
+                            if not z : # Certains nouveaux formats de données renvoient des listes vides de modifs de titulaires.
+                                print("Liste titulaire vide pour l'entrée suivante : \n")
+                                print(y)
+                            else:
+                                x[0]['modification'][i]['titulaires'] = \
+                                    ([y for y in z]) if len(z) > 1 else [z[0]]
                 else:
                     if 'titulaires' in x[0]['modification']:
                         z = x[0]['modification']['titulaires']
