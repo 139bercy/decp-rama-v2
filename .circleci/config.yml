@@ -39,7 +39,7 @@ jobs:
     ramav2:
         docker:
             - image: circleci/python:3.7.4
-        resource_class: 2xlarge
+        resource_class: xlarge
         steps:
             - checkout
             - attach_workspace:
@@ -85,7 +85,7 @@ workflows:
                 - ramav2
     triggers:
       - schedule:
-          cron: 35 10 * * *
+          cron: 43 10 * * *
           filters:
             branches:
               only:
