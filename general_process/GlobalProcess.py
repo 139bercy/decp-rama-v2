@@ -61,7 +61,6 @@ class GlobalProcess:
                 if "titulaires" in x_.keys():
                     if type(x_["titulaires"])==dict:
                         x_['titulaires'] = x_['titulaires']['titulaire']
-                    print(x)
             return x
         def remove_titulaire_key_in_modif(x):
             """
