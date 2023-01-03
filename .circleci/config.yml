@@ -84,7 +84,7 @@ workflows:
                 - ramav2
     triggers:
       - schedule:
-          cron: 0 4 * * *
+          cron: 0 10 * * *
           filters:
             branches:
               only:
