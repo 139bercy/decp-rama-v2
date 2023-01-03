@@ -133,8 +133,6 @@ class GlobalProcess:
         self.df = self.df.reset_index(drop=True)
         logging.info("Suppression OK")
         logging.info(f"Nombre de marchés dans Df après suppression des doublons : {len(self.df)}")
-        with open('pickle_test.pkl', "wb") as f:
-            pickle.dump(self.dataframes, f)
 
     def export(self):
         """Étape exportation des résultats au format json et xml dans le dossier /results"""
@@ -149,13 +147,9 @@ class GlobalProcess:
         logging.info("Exportation XML OK")
         logging.info(f"Taille de decp.xml : {xml_size}")
         """
-        with open('pickleselfdf.pkl', 'wb') as f:
-            pickle.dump(self.df, f)
         logging.info("Début de l'étape Exportation en JSON")
         dico = {'marches': [{k: v for k, v in m.items() if str(v) != 'nan'}
                             for m in self.df.to_dict(orient='records')]}
-        with open('dico.pkl', 'wb') as f:
-            pickle.dump(dico, f)
         for marche in dico['marches']:
             if 'titulaires' in marche.keys() and marche['titulaires'] is not None and len(
                     marche['titulaires']) > 0:
