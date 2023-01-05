@@ -75,8 +75,12 @@ workflows:
   main:
     jobs:
       - install_dependencies
+      - test_url:
+          requires:
+            - install_dependencies
       - upload_saagie:
             context:
                 - decp-rama-v2
             requires:
+                - test_url
                 - install_dependencies
