@@ -50,7 +50,7 @@ jobs:
                 name: Run test_url.py
                 command: |
                     . venv/bin/activate
-                    python test_url.py
+                    python test_urls.py
                 no_output_timeout: 1h
     upload_saagie:
         docker:
