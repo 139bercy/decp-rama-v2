@@ -105,7 +105,7 @@ class GlobalProcess:
         dict_mapping = {"MARCHE_PUBLIC": "Marché", "CONTRAT_DE_CONCESSION":"Contrat de concession"}
         bool_nan_type = self.df.loc[:, "_type"].isna()
         self.df.loc[bool_nan_type, "_type"] = self.df.loc[bool_nan_type, "typeContrat"].map(dict_mapping)
-        cols_to_drop = ["typeContrat", "lieuExecution", "ReferenceAccordCadre"] # On supprime donc typeContrat et lieuExecution est maintenant vide 
+        cols_to_drop = ["typeContrat", "ReferenceAccordCadre"] # On supprime donc typeContrat est maintenant vide 
         # ReferenceAccordCadre n'a que 6 valeurs non nuls sur 650k lignes et en plus cette colonne n'existe pas dans v1. Je supprime.
         self.df = self.df.drop(cols_to_drop, axis=1)
         #Si il y a des Nan dans modifications, on met une liste vide pour coller au format du v1
