@@ -19,6 +19,7 @@ def get_urls() -> list:
         metadata_json = json.load(f)
 
     all_urls = []
+    # vérification de la présence de la clé api, si elle n'est pas présente, on ne modifie pas l'url
     for key in metadata_json.keys():
         try:
             for cle in metadata_json[key]["cle_api"]:
