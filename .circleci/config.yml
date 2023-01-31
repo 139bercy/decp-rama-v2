@@ -74,7 +74,7 @@ workflows:
             context:
                 - decp-rama-v2
             requires:
-                - install_requirements
+                - install_dependencies
       - upload_saagie:
             context:
                 - decp-rama-v2
