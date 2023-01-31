@@ -124,17 +124,20 @@ class GlobalProcess:
         convertis l'ensemble du DataFrame en string."""
         # Suppression des doublons
         logging.info("Début de l'étape Suppression des doublons")
-        df_str = self.df.astype(str)
-        for c in df_str.columns:
-            df_str[c] = df_str[c].str.replace(' ', '')
-        df_str = df_str.drop(["source"], axis=1)
-        index_to_keep = df_str.drop_duplicates().index.tolist()
-        self.df = self.df.iloc[index_to_keep]
+        self.df.sort_values(by="source", inplace=True) # Pourquoi ? La partie métier (Martin Douysset) a demandé à ce qu'en cas de doublon sur plusieurs sources, ceux de l'AIFE
+        df_modif = self.df[self.df.modifications.apply(len)>0] # Les règles de dédoublonnages diffèrent dans ces cas là.
+        df_nomodif = self.df[self.df.modifications.apply(len)==0]
+        # Suppression des doublons
+        df_nomodif_str = df_nomodif.astype(str) # Pour avoir des objets dedoublonnables
+        feature_doublons = ["objet", "acheteur.id", "titulaires", "dateNotification", "montant"]
+        index_to_keep_nomodif = df_nomodif_str.drop_duplicates(subset=feature_doublons).index.tolist()
+        df_modif_str = df_modif.astype(str)
+        index_to_keep_modif = df_modif_str.drop_duplicates().index.tolist() # Dans le cas des modifs, un dédoublonnage dure.
+        self.df = pd.concat([df_nomodif.loc[index_to_keep_nomodif, :], df_modif.loc[index_to_keep_modif, :]])
         self.df = self.df.reset_index(drop=True)
         logging.info("Suppression OK")
-        logging.info(f"Nombre de marchés dans Df après suppression des doublons : {len(self.df)}")
-        with open('pickle_test.pkl', "wb") as f:
-            pickle.dump(self.dataframes, f)
+        logging.info(f"Nombre de marchés dans Df après suppression des doublons strictes : {len(self.df)}")
+
 
     def export(self):
         """Étape exportation des résultats au format json et xml dans le dossier /results"""
@@ -149,8 +152,6 @@ class GlobalProcess:
         logging.info("Exportation XML OK")
         logging.info(f"Taille de decp.xml : {xml_size}")
         """
-        with open('pickleselfdf.pkl', 'wb') as f:
-            pickle.dump(self.df, f)
         logging.info("Début de l'étape Exportation en JSON")
         dico = {'marches': [{k: v for k, v in m.items() if str(v) != 'nan'}
                             for m in self.df.to_dict(orient='records')]}
