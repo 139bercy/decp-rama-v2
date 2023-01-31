@@ -61,4 +61,4 @@ workflows:
             context:
                 - decp-rama-v2
             requires:
-                - do_run
+                - install_dependencies
