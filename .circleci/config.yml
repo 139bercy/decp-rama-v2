@@ -38,6 +38,19 @@ jobs:
                 root: ~/project
                 paths:
                     - "results/decpv2.json"
+    do_run:
+        docker:
+            - image: circleci/python:3.7.4
+        steps:
+            - checkout
+            - restore_cache:
+                keys:
+                    - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
+            - run:
+                name: Run du processus decp-rama-v2
+                command: |
+                    . venv/bin/activate
+                    python main.py
     upload_saagie:
         docker:
             - image: circleci/python:3.7.4
@@ -57,8 +70,13 @@ workflows:
   main:
     jobs:
       - install_dependencies
+      - do_run:
+            context:
+                - decp-rama-v2
+            requires:
+                - install_requirements
       - upload_saagie:
             context:
                 - decp-rama-v2
             requires:
-                - install_dependencies
+                - do_run
