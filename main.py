@@ -25,6 +25,7 @@ def main():
     gp.fix_all()
     gp.drop_duplicate()
     gp.export()
+    gp.upload_s3()
 
 
 if __name__ == "__main__":

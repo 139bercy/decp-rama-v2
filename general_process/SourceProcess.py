@@ -24,6 +24,7 @@ class SourceProcess:
             self.metadata = json.load(f)
         self.source = self.metadata[self.key]["code"]
         self.format = self.metadata[self.key]["format"]
+        self.url_source = self.metadata[self.key]["url_source"]
         self.df = pd.DataFrame()
 
         # Lavage des dossiers de la source
@@ -76,7 +77,10 @@ class SourceProcess:
         self.file_name = [f"{self.metadata[self.key]['code']}_{i}" for i in range(len(self.url))]
         os.makedirs(f"sources/{self.source}", exist_ok=True)
         for i in range(len(self.url)):
-            wget.download(self.url[i], f"sources/{self.source}/{self.file_name[i]}.{self.format}")
+            try:
+                wget.download(self.url[i], f"sources/{self.source}/{self.file_name[i]}.{self.format}")
+            except:
+                print("Problème de téléchargement du fichier ", self.url[i])
         logging.info(f"Téléchargement : {len(self.url)} fichier(s) OK")
 
     def convert(self):
@@ -91,24 +95,38 @@ class SourceProcess:
                 count += 1
         for i in range(count):
             file_path = f"sources/{self.source}/{self.file_name[i]}.{self.format}"
-            with open(file_path) as file:
-                chaine = re.sub("\'", " ", file.read())
-            with open(file_path, "w") as file:
-                file.write(chaine)
+            file_exist = os.path.exists(file_path)
+            if file_exist:
+                with open(file_path) as file:
+                    chaine = re.sub("\'", " ", file.read())
+                with open(file_path, "w") as file:
+                    file.write(chaine)
+            else:
+                print(f" Fichier {file_path} n existe pas.")
         if count != len(self.url):
             logging.warning("Nombre de fichiers en local inégal au nombre d'url trouvé")
         logging.info(f"Début de convert: mise au format DataFrame de {self.source}")
         if self.format == 'xml':
             li = []
             for i in range(count):
-                with open(
-                        f"sources/{self.source}/{self.file_name[i]}.{self.format}") as xml_file:
-                    dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
-                    if dico['marches'] is not None:
-                        df = pd.DataFrame.from_dict(dico['marches']['marche'])
-                    else:
-                        logging.warning(f"Le fichier {self.file_name[i]} est vide, il est ignoré")
-
+                try : 
+                    with open(
+                            f"sources/{self.source}/{self.file_name[i]}.{self.format}", encoding="utf-8") as xml_file:
+                            dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
+                except : 
+                    with open(
+                            f"sources/{self.source}/{self.file_name[i]}.{self.format}", encoding="utf-8") as xml_file:
+                        specials_caracters = [""] # Liste de caractères spéciaux qui ne passe pas.
+                        print(f"Du fichier {self.file_name[i]} sont retirés à la main les caractères spéciaux empêchant sa lecture")
+                        str_file = xml_file.read()
+                        for special in specials_caracters:
+                            str_file = str_file.replace(special, "")
+                        dico = xmltodict.parse(str_file, dict_constructor=dict)
+                        print('Fichier correctement transformé')
+                if dico['marches'] is not None:
+                    df = pd.DataFrame.from_dict(dico['marches']['marche'])
+                else:
+                    logging.warning(f"Le fichier {self.file_name[i]} est vide, il est ignoré")
                 li.append(df)
             df = pd.concat(li)
             df = df.reset_index(drop=True)
@@ -116,10 +134,13 @@ class SourceProcess:
         elif self.format == 'json':
             li = []
             for i in range(count):
-                with open(
-                        f"sources/{self.source}/{self.file_name[i]}.{self.format}") as json_file:
-                    dico = json.load(json_file)
-                li.append(pd.DataFrame.from_dict(dico['marches']))
+                try:
+                    with open(
+                            f"sources/{self.source}/{self.file_name[i]}.{self.format}") as json_file:
+                        dico = json.load(json_file)
+                        li.append(pd.DataFrame.from_dict(dico['marches']))
+                except:
+                    print(f" Le fichier {self.source} est introuvable")
             df = pd.concat(li)
             df = df.reset_index(drop=True)
             self.df = df
