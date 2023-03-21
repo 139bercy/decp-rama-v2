@@ -3,6 +3,7 @@ from general_process.GlobalProcess import GlobalProcess
 import logging
 import argparse
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-P', dest='process', type=str, help='run a specific process')
 args = parser.parse_args()

@@ -21,14 +21,18 @@ class DecpAwsProcess(SourceProcess):
         pass
 
     def get(self):
-        """ Un peu particulier, on pointe sur data eco"""
-        api_key = str(os.environ.get("API_KEY_Gaspard"))
+        """ Un peu particulier, on pointe sur data eco  puis maj sur databretagne"""
+        api_key = str(os.environ.get("API_KEY_Djabril"))
         os.makedirs(f"sources/{self.source}", exist_ok=True)
+        print(api_key)
         
-        wget.download(self.url_source+str(api_key), self.local_path)
+        wget.download(self.url_source, self.local_path)
+        print(self.url_source+str('d7502176c8b8750dfc5e4f713a99b49545ff08046d0ea6961a01d3bf'))
+        print("Ok")
 
     def convert(self):
         with open(self.local_path, "r") as f:
+            #print(f.read())
             awsjson = json.load(f)
         self.df = pd.json_normalize(awsjson)
         # Je ne sais pas pourquoi mais lorsque l'on télécharge depuis data eco les listes sont renvoyés comme des strings.
@@ -41,7 +45,7 @@ class DecpAwsProcess(SourceProcess):
         self.df.modifications = self.df.modifications.apply(lambda x:[{"modification": x[0]}] if len(x)>0 else x)
         
         # Les None sont également des string du coup. Castons les
-        self.df = self.df.replace("None", None, regex=True)
+        #self.df = self.df.replace("None", None, regex=True)
 
         # On applique le même traitement que dans la classe parent, ie on retire les "'" pour des " ". 
         # Ca posait problèmes car les clefs des dictionnaires était en simple quote (') et pas (").

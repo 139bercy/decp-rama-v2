@@ -129,7 +129,7 @@ class GlobalProcess:
         df_nomodif = self.df[self.df.modifications.apply(len)==0]
         # Suppression des doublons
         df_nomodif_str = df_nomodif.astype(str) # Pour avoir des objets dedoublonnables
-        feature_doublons = ["objet", "acheteur.id", "titulaires", "dateNotification", "montant"]
+        feature_doublons = ["objet","acheteur.id" ,"titulaires", "dateNotification", "montant"]  #acheteur.id
         index_to_keep_nomodif = df_nomodif_str.drop_duplicates(subset=feature_doublons).index.tolist()
         df_modif_str = df_modif.astype(str)
         index_to_keep_modif = df_modif_str.drop_duplicates().index.tolist() # Dans le cas des modifs, un dédoublonnage dure.

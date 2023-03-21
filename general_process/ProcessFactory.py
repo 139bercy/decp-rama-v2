@@ -20,7 +20,7 @@ class ProcessFactory:
         """Création de la liste des Processus qui correspondent chacun à une classe importée en début de document."""
         #self.processes = [PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, MegaProcess]
         #self.processes = [MaxiProcess]
-        self.processes = [DecpAwsProcess, BfcProcess, PesProcess, AwsProcess, AifeProcess, EmarProcess, LyonProcess, MegaProcess] #Supprimer le BRe
+        self.processes = [DecpAwsProcess,BfcProcess, PesProcess ,AwsProcess, AifeProcess, EmarProcess, LyonProcess, MegaProcess] #Supprimer le BRe car pris en compte dans megalisbre   #DecpAwsProcess
         #self.processes = [PesProcess, LyonProcess, EmarProcess]
         self.dataframes = []
         # si on lance main avec un process spécifié :

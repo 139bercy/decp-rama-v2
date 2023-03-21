@@ -44,7 +44,7 @@ Pour faire tourner en local decp-rama-v2 et obtenir le fichier decp.json aggrég
 - Lancer ```python main.py``` dans le dossier principal
 - Le fichier final decp.json se trouvera dans le fichier resultats/
 
-Possibilité de lancer un seul process pour les tests : ```python main.py -P [process_name]```
+Possibilité de lancer un seul process pour les tests : ````python main.py -P [process_name]``
 
 ## **FIX A EFFECTUER ET PISTES D'AMÉLIORATION**
 
