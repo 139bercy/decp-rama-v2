@@ -21,11 +21,10 @@ class DecpAwsProcess(SourceProcess):
         pass
 
     def get(self):
-        """ Un peu particulier, on pointe sur data eco"""
-        api_key = str(os.environ.get("API_KEY_Gaspard"))
+        """ Un peu particulier, on pointe sur data eco puis maj sur databretagne"""
+        api_key = str(os.environ.get("API_KEY_Djabril"))  # à quoi sert cette variable ?
         os.makedirs(f"sources/{self.source}", exist_ok=True)
-        
-        wget.download(self.url_source+str(api_key), self.local_path)
+        wget.download(self.url_source, self.local_path)
 
     def convert(self):
         with open(self.local_path, "r") as f:
@@ -41,12 +40,12 @@ class DecpAwsProcess(SourceProcess):
         self.df.modifications = self.df.modifications.apply(lambda x:[{"modification": x[0]}] if len(x)>0 else x)
         
         # Les None sont également des string du coup. Castons les
-        self.df = self.df.replace("None", None, regex=True)
+        # self.df = self.df.replace("None", None, regex=True)
 
         # On applique le même traitement que dans la classe parent, ie on retire les "'" pour des " ". 
         # Ca posait problèmes car les clefs des dictionnaires était en simple quote (') et pas (").
         # Alors je n'applique pas ces modifications pour lesquelles je en vois pas d'utilité partciulière actuellement
-        #self.df = self.df.replace("\'", " ", regex=True)
+        # self.df = self.df.replace("\'", " ", regex=True)
         dict_mapping = {"codecpv":"codeCPV", "type":"_type", "acheteur_id":"acheteur.id", "acheteur_nom":"acheteur.nom",
         "datenotification": "dateNotification", "datepublicationdonnees": "datePublicationDonnees",
         "lieuexecution_code": "lieuExecution.code", "lieuexecution_nom":"lieuExecution.nom", "lieuexecution_typecode": "lieuExecution.typeCode",
