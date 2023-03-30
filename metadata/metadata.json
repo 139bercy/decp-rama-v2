@@ -20,7 +20,7 @@
   "decp_aws": {
     "code": "decp_aws",
     "description" : "Marchés perdus et récupérés par Thibous et Martin",
-    "url_source" : "https://data.economie.gouv.fr/api/v2/catalog/datasets/decp_aws/exports/json?limit=-1&offset=0&timezone=UTC&apikey=",
+    "url_source" : "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/decp_aws/exports/json?lang=fr&timezone=Europe%2FBerlin",
     "format" :"json",
     "url" :""
   },
@@ -80,8 +80,8 @@
   {
     "code": "region-bretagne",
     "description": "Données publiées par la région bretagne sur son site opendata",
-    "url_source": "https://data.bretagne.bzh/api/datasets/1.0/decp-crb/alternative_exports/decp2021_regionbretagne_csv_xml",
-    "format": "xml",
+    "url_source": "https://data.bretagne.bzh/api/v2/catalog/datasets/decp-crb0/exports/json",
+    "format": "json",
     "url": ""
   }
 }
