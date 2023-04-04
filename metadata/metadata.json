@@ -20,7 +20,7 @@
   "decp_aws": {
     "code": "decp_aws",
     "description" : "Marchés perdus et récupérés par Thibous et Martin",
-    "url_source" : "https://data.economie.gouv.fr/api/v2/catalog/datasets/decp_aws/exports/json?limit=-1&offset=0&timezone=UTC&apikey=",
+    "url_source" : "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/decp_aws/exports/json?lang=fr&timezone=Europe%2FBerlin",
     "format" :"json",
     "url" :""
   },
