@@ -55,3 +55,15 @@ Pour terminer le projet decp-rama-v2 et continuer à l'améliorer, voici les dif
 - Mettre en place la publication des données qui sont aujourd'hui uniquement publiées sur le serveur ftp de data.eco
 
 Si vous avez connaissance de données essentielles de la commande publique facilement accessibles (téléchargement en masse possible) et qui ne sont pas encore identifiées dans le fichier metadata.json, merci de [nous en informer](#contact).
+## Tableau des sources URL qui focntionnent ou non 
+| data.gouv.fr_pes     | https://files.data.gouv.fr/decp/dgfip-pes-decp.xml                                                                 | KO |  N'est plus utilisé |   |   |   |   |   |   |
+|----------------------|--------------------------------------------------------------------------------------------------------------------|----|---------------------|---|---|---|---|---|---|
+| marches-publics.info | https://www.data.gouv.fr/fr/datasets/5cdb1722634f41416ffe90e2/                                                     | OK | NC                  |   |   |   |   |   |   |
+| decp_aws             | https://data.economie.gouv.fr/api/v2/catalog/datasets/decp_aws/exports/json?limit=-1&offset=0&timezone=UTC&apikey= | OK | NC                  |   |   |   |   |   |   |
+| data.gouv.fr_aife    | https://www.data.gouv.fr/fr/organizations/agence-pour-linformatique-financiere-de-letat/                           | OK | NC                  |   |   |   |   |   |   |
+| e-marchespublics     | https://www.data.gouv.fr/fr/datasets/5c0a7845634f4139b2ee8883                                                      | OK | NC                  |   |   |   |   |   |   |
+| grandlyon            | https://download.data.grandlyon.com/files/grandlyon/citoyennete/marches_publics.xml                                | OK | NC                  |   |   |   |   |   |   |
+| atexo-maximilien     | https://www.data.gouv.fr/datasets/5f4d1921f7e627ef3ae26944                                                         | OK | NC                  |   |   |   |   |   |   |
+| ternum-bfc           | http://focus-marches.ternum-bfc.fr/xml/                                                                            | OK | NC                  |   |   |   |   |   |   |
+| megalis-bretagne     | https://www.data.gouv.fr/fr/datasets/5f4f4f8910f4b55843deae51                                                      | OK | NC                  |   |   |   |   |   |   |
+| region-bretagne      | https://data.bretagne.bzh/api/datasets/1.0/decp-crb/alternative_exports/decp2021_regionbretagne_csv_xml            | KO | Megalis                  |   |   |   |   |   |   |
