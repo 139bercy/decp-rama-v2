@@ -2,7 +2,7 @@ version: 2.1
 jobs:
     install_dependencies:
         docker:
-            - image: circleci/python:3.7.4
+            - image: circleci/python:3.10.0
         steps:
             - checkout
             - restore_cache:
@@ -20,7 +20,7 @@ jobs:
                     - "venv"
     ramav2:
         docker:
-            - image: circleci/python:3.7.4
+            - image: circleci/python:3.10.0
         steps:
             - checkout
             - attach_workspace:
@@ -40,7 +40,7 @@ jobs:
                     - "results/decpv2.json"
     upload_saagie:
         docker:
-            - image: circleci/python:3.7.4
+            - image: circleci/python:3.10.0
         steps:
             - checkout
             - restore_cache:
