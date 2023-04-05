@@ -66,4 +66,4 @@ Si vous avez connaissance de données essentielles de la commande publique facil
 | atexo-maximilien     | https://www.data.gouv.fr/datasets/5f4d1921f7e627ef3ae26944                                                         | OK | NC                  |   |   |   |   |   |   |
 | ternum-bfc           | http://focus-marches.ternum-bfc.fr/xml/                                                                            | OK | NC                  |   |   |   |   |   |   |
 | megalis-bretagne     | https://www.data.gouv.fr/fr/datasets/5f4f4f8910f4b55843deae51                                                      | OK | NC                  |   |   |   |   |   |   |
-| region-bretagne      | https://data.bretagne.bzh/api/datasets/1.0/decp-crb/alternative_exports/decp2021_regionbretagne_csv_xml            | OK | NC                  |   |   |   |   |   |   |
+| region-bretagne      | https://data.bretagne.bzh/api/datasets/1.0/decp-crb/alternative_exports/decp2021_regionbretagne_csv_xml            | KO | Joined megalis                  |   |   |   |   |   |   |
