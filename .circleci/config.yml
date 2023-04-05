@@ -57,8 +57,13 @@ workflows:
   main:
     jobs:
       - install_dependencies
-      - upload_saagie:
-            context:
-                - decp-rama-v2
+      - ramav2:
             requires:
                 - install_dependencies
+      - upload_saagie:
+            requires:
+                - install_dependencies
+            filters:
+                branches:
+                    only:
+                        - main
