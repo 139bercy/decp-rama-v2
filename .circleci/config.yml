@@ -57,9 +57,6 @@ workflows:
   main:
     jobs:
       - install_dependencies
-      - ramav2:
-            requires:
-                - install_dependencies
       - upload_saagie:
             requires:
                 - install_dependencies
