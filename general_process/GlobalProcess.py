@@ -64,11 +64,11 @@ class GlobalProcess:
             return x
         def remove_titulaire_key_in_modif(x):
             """
-            Certains format de données retournent une dictionnaire de dictionnaire pour les modifications de titulaires, ce n'est pas le format de la V1.
+            Certain format de données retournent un dictionnaire de dictionnaire pour les modifications de titulaires, ce n'est pas le format de la V1.
             """
             x = x[0]
             x_dict = x['modification']
-            if type(x_dict) ==list: # Certains format sont des listes de 1 élément
+            if type(x_dict) ==list: # Certain format sont des listes de 1 élément
                 x_dict = x_dict[0]
             if "titulaires" in x_dict.keys() :
                 if (type(x_dict['titulaires']) == dict) and ("titulaire" in x_dict['titulaires'].keys()) :
@@ -104,11 +104,14 @@ class GlobalProcess:
         # Type de contrat qui s'étale sur deux colonnes, on combine les deux et garde _type qui est l'appelation dans Ramav1
         dict_mapping = {"MARCHE_PUBLIC": "Marché", "CONTRAT_DE_CONCESSION":"Contrat de concession"}
         bool_nan_type = self.df.loc[:, "_type"].isna()
-        self.df.loc[bool_nan_type, "_type"] = self.df.loc[bool_nan_type, "typeContrat"].map(dict_mapping)
-        cols_to_drop = ["typeContrat", "ReferenceAccordCadre"] # On supprime donc typeContrat est maintenant vide 
-        # ReferenceAccordCadre n'a que 6 valeurs non nuls sur 650k lignes et en plus cette colonne n'existe pas dans v1. Je supprime.
+        if "typeContrat" in self.df.columns:  # Dans le cas où typeContrat n'existe pas, on ne fait rien
+            self.df.loc[bool_nan_type, "_type"] = self.df.loc[bool_nan_type, "typeContrat"].map(dict_mapping)
+            cols_to_drop = ["typeContrat", "ReferenceAccordCadre"] # On supprime donc typeContrat qui est maintenant vide
+        else:
+            cols_to_drop = ["ReferenceAccordCadre"]
+        # ReferenceAccordCadre n'a que 6 valeurs non nul sur 650k lignes et en plus cette colonne n'existe pas dans v1.
         self.df = self.df.drop(cols_to_drop, axis=1)
-        #Si il y a des Nan dans modifications, on met une liste vide pour coller au format du v1
+        # S'il y a des Nan dans les modifications, on met une liste vide pour coller au format du v1
         mask_modifications_nan = self.df.loc[:, "modifications"].isnull()
         self.df.modifications.loc[mask_modifications_nan] = self.df.modifications.loc[mask_modifications_nan].apply(lambda x: [])
         # Gestion des multiples modifications  ===> C'est traité dans la partie gestion de la version flux. On va garder cette manière de faire, mais il faut une autre solution pour les unashable type.
