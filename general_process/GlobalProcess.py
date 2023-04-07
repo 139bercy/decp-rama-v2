@@ -68,7 +68,7 @@ class GlobalProcess:
             """
             x = x[0]
             x_dict = x['modification']
-            if type(x_dict) ==list: # Certain format sont des listes de 1 élément
+            if type(x_dict) ==list: # Certains format sont des listes de 1 élément
                 x_dict = x_dict[0]
             if "titulaires" in x_dict.keys() :
                 if (type(x_dict['titulaires']) == dict) and ("titulaire" in x_dict['titulaires'].keys()) :
