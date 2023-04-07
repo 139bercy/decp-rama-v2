@@ -76,13 +76,11 @@ class GlobalProcess:
             return x
         logging.info("  ÉTAPE FIX ALL")
         logging.info("Début de l'étape Fix_all du DataFrame fusionné")
+
         # On met les acheteurs et lieux au bon format
-        for x in self.df['acheteur.id']:
-            if type(x) == dict:
-                x['acheteur.id'] = str(x['acheteur.id'])
-        for x in self.df['lieuExecution.code']:
-            if type(x) == dict:
-                x['lieuExecution.code'] = str(x['lieuExecution.code'])
+        self.df['acheteur.id'] = self.df['acheteur.id'].astype(str)
+        self.df['lieuExecution.code'] = self.df['lieuExecution.code'].astype(str)
+
         # Suppression des colonnes inutiles
         self.df = self.df.drop('dateTransmissionDonneesEtalab', axis=1)
         # Format des dates
