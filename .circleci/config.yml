@@ -57,10 +57,9 @@ workflows:
   main:
     jobs:
       - install_dependencies
-      - upload_saagie:
+      - ramav2:
             requires:
                 - install_dependencies
-            filters:
-                branches:
-                    only:
-                        - main
+      - upload_saagie:
+            requires:
+                - ramav2
