@@ -64,7 +64,7 @@ class GlobalProcess:
             return x
         def remove_titulaire_key_in_modif(x):
             """
-            Certain format de données retournent un dictionnaire de dictionnaire pour les modifications de titulaires, ce n'est pas le format de la V1.
+            Certains format de données retournent un dictionnaire de dictionnaire pour les modifications de titulaires, ce n'est pas le format de la V1.
             """
             x = x[0]
             x_dict = x['modification']
