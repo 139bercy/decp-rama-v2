@@ -59,7 +59,7 @@ workflows:
       - install_dependencies
       - upload_saagie:
             requires:
-                - ramav2
+                - install_dependencies
             filters:
                 branches:
                     only:
