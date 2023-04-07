@@ -104,11 +104,12 @@ class GlobalProcess:
         # Type de contrat qui s'étale sur deux colonnes, on combine les deux et garde _type qui est l'appelation dans Ramav1
         dict_mapping = {"MARCHE_PUBLIC": "Marché", "CONTRAT_DE_CONCESSION":"Contrat de concession"}
         bool_nan_type = self.df.loc[:, "_type"].isna()
+        cols_to_drop = []
         if "typeContrat" in self.df.columns:  # Dans le cas où typeContrat n'existe pas, on ne fait rien
             self.df.loc[bool_nan_type, "_type"] = self.df.loc[bool_nan_type, "typeContrat"].map(dict_mapping)
-            cols_to_drop = ["typeContrat", "ReferenceAccordCadre"] # On supprime donc typeContrat qui est maintenant vide
-        else:
-            cols_to_drop = ["ReferenceAccordCadre"]
+            cols_to_drop.append("typeContrat") # On supprime donc typeContrat qui est maintenant vide
+        if "ReferenceAccordCadre" in self.df.columns: # Dans le cas où ReferenceAccordCadre n'existe pas, on ne fait rien
+            cols_to_drop.append("ReferenceAccordCadre")
         # ReferenceAccordCadre n'a que 6 valeurs non nul sur 650k lignes et en plus cette colonne n'existe pas dans v1.
         self.df = self.df.drop(cols_to_drop, axis=1)
         # S'il y a des Nan dans les modifications, on met une liste vide pour coller au format du v1
