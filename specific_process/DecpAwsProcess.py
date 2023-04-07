@@ -59,6 +59,8 @@ class DecpAwsProcess(SourceProcess):
                         "dureemois":"dureeMois",
                         "datetransmissiondonneesetalab":"dateTransmissionDonneesEtalab"}
         self.df = self.df.rename(columns=dict_mapping)
+        # creation d'une nouvelle colonne dateDebutExecution avec des nan pour ne pas casser le process général
+        self.df["dateDebutExecution"] = None
     
     def fix(self):
         super().fix()
