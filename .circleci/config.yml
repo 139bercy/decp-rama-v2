@@ -67,7 +67,20 @@ jobs:
                 name: Transferts des données vers data eco
                 command: |
                     lftp -u ${DEPLOY_USER}:${DEPLOY_PASSWORD} ${DEPLOY_HOST} -e "set ftp:ssl-force true ; set ssl:verify-certificate false; cd decp ; put results/decpv2.json ; quit"
-
+    upload_api:
+        docker:
+            - image: 139bercy/decp-rama
+        environment:
+            - API_KEY: eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjoiNjQzNjY4YmViMjQ1NGU2MTlmNTYwNjc2IiwidGltZSI6MTY4MTI5MzU1MS4xNzA2ODM5fQ.18S9Z0MQ4GQcTiLTZz2Q2sc_3eiR4gHZqZqau6uqPRViW6cp1G0E9Dw0Dbou9OQntvOKOgsSotcVWWgeFlfkFg
+        steps:
+            - attach_workspace:
+                at: ~/project
+            - run:
+                name: Upload data to data.gouv.fr API
+                command: |
+                    curl -H "X-API-KEY: $API_KEY" 
+                    -X PUT 
+                    -T ~/project/results/decp.json "https://www.data.gouv.fr/api/1/datasets/5cd57bf68b4c4179299eb0e9/resources/ba400316-34fb-4d12-aad2-ac7cbe8b517a/upload/"
 
 
 workflows:
@@ -83,3 +96,7 @@ workflows:
       - sendv2:
             requires:
                 - ramav2
+      - upload_api:
+            requires:
+                - ramav2
+      
