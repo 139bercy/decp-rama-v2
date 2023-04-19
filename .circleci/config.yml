@@ -1,4 +1,4 @@
-version: '2.1'
+version: 2.1
 jobs:
     install_dependencies:
         docker:
@@ -62,9 +62,12 @@ jobs:
             - run:
                 name: Upload data to data.gouv.fr API
                 command: |
-                    curl -H "X-API-KEY: $API_KEY" 
-                    -X PUT 
-                    -T ~/project/results/decp.json "https://www.data.gouv.fr/api/1/datasets/5cd57bf68b4c4179299eb0e9/resources/ba400316-34fb-4d12-aad2-ac7cbe8b517a/upload/"
+                    curl -H "X-API-KEY: $API_KEY" \
+                    -X PUT \
+                    -T ~/project/results/decp.json \
+                    "https://www.data.gouv.fr/api/1/datasets/5cd57bf68b4c4179299eb0e9/resources/ba400316-34fb-4d12-aad2-ac7cbe8b517a/upload/"
+
+
 workflows:
   version: 2
   sendv2:
