@@ -56,6 +56,7 @@ jobs:
     upload_api:
         docker:
             - image: 139bercy/decp-rama
+        
         steps:
             - attach_workspace:
                 at: ~/project
@@ -78,5 +79,3 @@ workflows:
       - upload_api
 requires:
        - ramav2
-
-   
