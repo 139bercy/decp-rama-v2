@@ -76,6 +76,7 @@ workflows:
       - ramav2
   upload_api:
     jobs:
-      - upload_api
-requires:
-       - ramav2
+      - ramav2
+      - upload_api:
+          requires:
+            - ramav2
