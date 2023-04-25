@@ -112,16 +112,12 @@ class SourceProcess:
                 try :
                     with open(
                             f"sources/{self.source}/{self.file_name[i]}.{self.format}", encoding="utf-8") as xml_file:
-                        specials_caracters = [""] # Liste de caractères spéciaux qui ne passe pas.
-                        str_file = xml_file.read()
-                        for special in specials_caracters:
-                            str_file = str_file.replace(special, "")
-                        dico = xmltodict.parse(str_file, dict_constructor=dict)
+                        dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
 
                     if dico['marches'] is not None:
                         df = pd.DataFrame.from_dict(dico['marches']['marche'])
                         li.append(df)
-                    else:
+                    else:  # cas presque nul
                         logging.warning(f"Le fichier {self.file_name[i]} est vide, il est ignoré")
                 except:
                     logging.error(f"Le fichier {self.file_name[i]} de la source {self.source}, n'est pas au format xml, il est ignoré")
