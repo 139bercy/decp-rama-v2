@@ -10,16 +10,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 USER_SAAGIE =os.environ.get("USER_SAAGIE")
 PASSWORD = os.environ.get("PASSWORD_SAAGIE")
 ENDPOINT_S3 = os.environ.get("ENDPOINT_S3")
-PROJECT_NAME = os.environ.get("PROJECT_NAME")
+PROJECT_NAME = "DECP"
 BUCKET_NAME = os.environ.get("BUCKET_NAME") 
 JOB_NAME = "decp_rama_v2"
 ZIP_NAME = "decp_rama_v2.zip"
 
-print(PROJECT_NAME)
-print(BUCKET_NAME)
 
 def main():
-    print("Début du script")
     files_to_add = []
     specific_path = "specific_process"
     for file in os.listdir(specific_path): # On ajoute tous les fichiers de specific process
@@ -40,15 +37,11 @@ def main():
     for file in files_to_add:
         zipObj.write(file)
     zipObj.close()
-    print("Zip créé")
 
     saagieapi =  SaagieApi.easy_connect(url_saagie_platform="https://mefsin-workspace.pcv.saagie.io/projects/platform/1/project/4fbca8d8-b3a5-4f63-97f1-b2ca6362a2b2/jobs",
         user=USER_SAAGIE,
         password=PASSWORD)
-    print("Connexion à saagie réussie")
-
     try:
-        print("On tente de mettre à jour le job")
         id_job = saagieapi.jobs.get_id(project_name=PROJECT_NAME, job_name=JOB_NAME)
         saagieapi.jobs.upgrade(job_id=id_job, file=ZIP_NAME, command_line="python3 main.py", runtime_version='3.9')
         print('Job upgrade')
