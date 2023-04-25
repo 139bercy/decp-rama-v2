@@ -42,9 +42,10 @@ def main():
     saagieapi =  SaagieApi.easy_connect(url_saagie_platform="https://mefsin-workspace.pcv.saagie.io/projects/platform/1/project/4fbca8d8-b3a5-4f63-97f1-b2ca6362a2b2/jobs",
         user=USER_SAAGIE,
         password=PASSWORD)
-
+    print("Connexion à saagie réussie")
 
     try:
+        print("On tente de mettre à jour le job")
         id_job = saagieapi.jobs.get_id(project_name=PROJECT_NAME, job_name=JOB_NAME)
         saagieapi.jobs.upgrade(job_id=id_job, file=ZIP_NAME, command_line="python3 main.py", runtime_version='3.9')
         print('Job upgrade')
