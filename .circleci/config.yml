@@ -62,7 +62,7 @@ workflows:
           filters:
             branches:
               only:
-                - fix_error_upload_saagie
+                - main
 
   run_all_code:
     jobs:
