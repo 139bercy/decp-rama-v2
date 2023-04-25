@@ -20,7 +20,7 @@ jobs:
                     - "venv"
     ramav2:
         docker:
-            - image: circleci/python:3.10.0
+            - image: cimg/python:3.10.0
         steps:
             - checkout
             - attach_workspace:
@@ -40,7 +40,7 @@ jobs:
                     - "results/decpv2.json"
     upload_saagie:
         docker:
-            - image: circleci/python:3.10.0
+            - image: cimg/python:3.10.0
         steps:
             - checkout
             - restore_cache:
@@ -71,12 +71,9 @@ jobs:
 
 workflows:
   version: 2
-  sendv2:
+  run_code:
     jobs:
-      - ramav2
-  upload_api:
-    jobs:
-      - ramav2
-      - upload_api:
-          requires:
-            - ramav2
+        - install_dependencies
+        - ramav2:
+            requires:
+                - install_dependencies
