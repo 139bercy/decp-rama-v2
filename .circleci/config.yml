@@ -1,66 +1,80 @@
 version: 2.1
 jobs:
-    install_dependencies:
-        docker:
-            - image: circleci/python:3.10.0
-        steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
-            - run:
-                name: Install dependencies
-                command: |
-                    python -m venv venv
-                    . venv/bin/activate
-                    pip install -r requirements.txt
-            - save_cache:
-                key:  v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
-                paths:
-                    - "venv"
-    ramav2:
-        docker:
-            - image: circleci/python:3.10.0
-        steps:
-            - checkout
-            - attach_workspace:
-                at: ~/project
-            - restore_cache:
-                keys:
-                    - v1-dependencies-{{ checksum "requirements.txt" }}
-            - run:
-                name: Run main.py
-                command: |
-                    . venv/bin/activate
-                    python main.py
-                no_output_timeout: 1h
-            - persist_to_workspace:
-                root: ~/project
-                paths:
-                    - "results/decpv2.json"
-    upload_saagie:
-        docker:
-            - image: circleci/python:3.10.0
-        steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
-            - run:
-                name: Upload du projet sur Saagie project DECP-RAMA-V2
-                command: |
-                    . venv/bin/activate
-                    python connect_saagie.py
+  install_dependencies:
+    docker:
+      - image: cimg/python:3.10.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
+      - run:
+          name: Install dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key:  v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
+          paths:
+            - "venv"
+  ramav2:
+    docker:
+      - image: cimg/python:3.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+      - run:
+          name: Run main.py
+          command: |
+            . venv/bin/activate
+            python main.py
+          no_output_timeout: 1h
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "results/decpv2.json"
+  upload_saagie:
+    docker:
+      - image: cimg/python:3.10.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
+      - run:
+          name: Upload du projet sur Saagie project DECP-RAMA-V2
+          command: |
+            . venv/bin/activate
+            python connect_saagie.py
 
 workflows:
-  version: 2
-  main:
+  upload_saagie:
+    jobs:
+      - install_dependencies:
+          filters:
+            branches:
+              only:
+                - test_branch
+      - upload_saagie:
+          requires:
+            - install_dependencies
+          filters:
+            branches:
+              only:
+                - test_branch
+
+  run_all_code:
     jobs:
       - install_dependencies
-      - upload_saagie:
-            requires:
-                - install_dependencies
-            filters:
-                branches:
-                    only:
-                        - main
+      - ramav2:
+          requires:
+            - install_dependencies
+          filters:
+            branches:
+              only:
+                - test_branch
