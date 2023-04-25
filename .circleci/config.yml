@@ -55,20 +55,30 @@ jobs:
 workflows:
   upload_saagie:
     jobs:
-      - install_dependencies
+      - install_dependencies:
+          filters:
+            branches:
+              only:
+                - test_branch
       - upload_saagie:
           requires:
             - install_dependencies
-    branches:
-      only:
-        - main
+          filters:
+            branches:
+              only:
+                - test_branch
 
   test_all_code:
     jobs:
-      - install_dependencies
+      - install_dependencies:
+          filters:
+            branches:
+              only:
+                - test_branch
       - ramav2:
           requires:
             - install_dependencies
-    branches:
-      only:
-        - test_branch
+          filters:
+            branches:
+              only:
+                - test_branch
