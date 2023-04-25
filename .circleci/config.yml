@@ -1,82 +1,80 @@
 version: 2.1
 jobs:
-    install_dependencies:
-        docker:
-            - image: circleci/python:3.10.0
-        steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
-            - run:
-                name: Install dependencies
-                command: |
-                    python -m venv venv
-                    . venv/bin/activate
-                    pip install -r requirements.txt
-            - save_cache:
-                key:  v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
-                paths:
-                    - "venv"
-    ramav2:
-        docker:
-            - image: circleci/python:3.10.0
-        steps:
-            - checkout
-            - attach_workspace:
-                at: ~/project
-            - restore_cache:
-                keys:
-                    - v1-dependencies-{{ checksum "requirements.txt" }}
-            - run:
-                name: Run main.py
-                command: |
-                    . venv/bin/activate
-                    python main.py
-                no_output_timeout: 1h
-            - persist_to_workspace:
-                root: ~/project
-                paths:
-                    - "results/decpv2.json"
-    upload_saagie:
-        docker:
-            - image: circleci/python:3.10.0
-        steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
-            - run:
-                name: Upload du projet sur Saagie project DECP-RAMA-V2
-                command: |
-                    . venv/bin/activate
-                    python connect_saagie.py
-                    
-
-    upload_api:
-        docker:
-            - image: 139bercy/decp-rama
-        
-        steps:
-            - attach_workspace:
-                at: ~/project
-            - run:
-                name: Upload data to data.gouv.fr API
-                command: |
-                    curl -H "X-API-KEY: $API_KEY" \
-                    -X PUT \
-                    -T ~/project/results/decp.json \
-                    "https://www.data.gouv.fr/api/1/datasets/5cd57bf68b4c4179299eb0e9/resources/ba400316-34fb-4d12-aad2-ac7cbe8b517a/upload/"
-
+  install_dependencies:
+    docker:
+      - image: cimg/python:3.10.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
+      - run:
+          name: Install dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key:  v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
+          paths:
+            - "venv"
+  ramav2:
+    docker:
+      - image: cimg/python:3.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+      - run:
+          name: Run main.py
+          command: |
+            . venv/bin/activate
+            python main.py
+          no_output_timeout: 1h
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - "results/decpv2.json"
+  upload_saagie:
+    docker:
+      - image: cimg/python:3.10.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
+      - run:
+          name: Upload du projet sur Saagie project DECP-RAMA-V2
+          command: |
+            . venv/bin/activate
+            python connect_saagie.py
 
 workflows:
-  version: 2
-  sendv2:
+  upload_saagie:
     jobs:
-      - ramav2
-  upload_api:
-    jobs:
-      - ramav2
-      - upload_api:
+      - install_dependencies:
+          filters:
+            branches:
+              only:
+                - main
+      - upload_saagie:
           requires:
-            - ramav2
+            - install_dependencies
+          filters:
+            branches:
+              only:
+                - main
+
+  run_all_code:
+    jobs:
+      - install_dependencies
+      - ramav2:
+          requires:
+            - install_dependencies
+          filters:
+            branches:
+              only:
+                - test_branch
