@@ -15,16 +15,17 @@ BUCKET_NAME = os.environ.get("BUCKET_NAME")
 JOB_NAME = "decp_rama_v2"
 ZIP_NAME = "decp_rama_v2.zip"
 
+
 def main():
     files_to_add = []
     specific_path = "specific_process"
-    for file in os.listdir(specific_path): # On ajoute tout les files de specific process
+    for file in os.listdir(specific_path): # On ajoute tous les fichiers de specific process
         files_to_add.append(os.path.join(specific_path, file))
     # De même avec les general_process
     general_path = "general_process"
     for file in os.listdir(general_path):
         files_to_add.append(os.path.join(general_path, file))
-    # Puiq metadata
+    # Puis metadata
     files_to_add.append("metadata/metadata.json")
     # Puis main.py
     files_to_add.append("main.py")
@@ -45,7 +46,7 @@ def main():
     try:
         id_job = saagieapi.jobs.get_id(project_name=PROJECT_NAME, job_name=JOB_NAME)
         saagieapi.jobs.upgrade(job_id=id_job, file=ZIP_NAME, command_line="python3 main.py", runtime_version='3.9')
-        print('Job upgrade')
+        print('Job upgraded')
     except Exception:
         print(f"{Exception}, Le jobs {JOB_NAME} n existe pas. On le créé")
         id_projet = saagieapi.projects.get_id(PROJECT_NAME)
