@@ -2,7 +2,7 @@ version: 2.1
 jobs:
     install_dependencies:
         docker:
-            - image: circleci/python:3.10.0
+            - image: cimg/python:3.10.0
         steps:
             - checkout
             - restore_cache:
