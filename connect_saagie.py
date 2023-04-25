@@ -15,6 +15,9 @@ BUCKET_NAME = os.environ.get("BUCKET_NAME")
 JOB_NAME = "decp_rama_v2"
 ZIP_NAME = "decp_rama_v2.zip"
 
+print(PROJECT_NAME)
+print(BUCKET_NAME)
+
 def main():
     print("Début du script")
     files_to_add = []
