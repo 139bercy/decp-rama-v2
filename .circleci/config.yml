@@ -59,10 +59,10 @@ workflows:
       - upload_saagie:
           requires:
             - install_dependencies
-  filters:
-    branches:
-      only:
-        - main
+    filters:
+      branches:
+        only:
+          - main
 
   test_all_code:
     jobs:
