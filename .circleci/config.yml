@@ -60,11 +60,11 @@ workflows:
             - ramav2:
                 requires:
                     - install_dependencies
-            - filters:
-                branches:
-                    only:
-                        # mettez le nom de la branche sur laquelle vous voulez tester tout le code
-                        - test
+        filters:
+            branches:
+                only:
+                    # mettez le nom de la branche sur laquelle vous voulez tester tout le code
+                    - test
 
     upload_saagie:
         jobs:
@@ -72,7 +72,7 @@ workflows:
             - upload_saagie:
                 requires:
                     - install_dependencies
-            - filters:
-                branches:
-                    only:
-                        - main
+        filters:
+            branches:
+                only:
+                    - main
