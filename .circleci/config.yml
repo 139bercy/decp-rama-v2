@@ -55,22 +55,22 @@ jobs:
 workflows:
   upload_saagie:
     jobs:
-      - install_dependencies:
-          filters:
-            branches:
-              only:
-                - main
+      - install_dependencies
       - upload_saagie:
           requires:
             - install_dependencies
           filters:
             branches:
               only:
-                - main
+                - fix_error_upload_saagie
 
   run_all_code:
     jobs:
-      - install_dependencies
+      - install_dependencies:
+          filters:
+            branches:
+              only:
+                - main
       - ramav2:
           requires:
             - install_dependencies

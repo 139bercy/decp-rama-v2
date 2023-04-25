@@ -16,15 +16,16 @@ JOB_NAME = "decp_rama_v2"
 ZIP_NAME = "decp_rama_v2.zip"
 
 def main():
+    print("Début du script")
     files_to_add = []
     specific_path = "specific_process"
-    for file in os.listdir(specific_path): # On ajoute tout les files de specific process
+    for file in os.listdir(specific_path): # On ajoute tous les fichiers de specific process
         files_to_add.append(os.path.join(specific_path, file))
     # De même avec les general_process
     general_path = "general_process"
     for file in os.listdir(general_path):
         files_to_add.append(os.path.join(general_path, file))
-    # Puiq metadata
+    # Puis metadata
     files_to_add.append("metadata/metadata.json")
     # Puis main.py
     files_to_add.append("main.py")
@@ -36,6 +37,7 @@ def main():
     for file in files_to_add:
         zipObj.write(file)
     zipObj.close()
+    print("Zip créé")
 
     saagieapi =  SaagieApi.easy_connect(url_saagie_platform="https://mefsin-workspace.pcv.saagie.io/projects/platform/1/project/4fbca8d8-b3a5-4f63-97f1-b2ca6362a2b2/jobs",
         user=USER_SAAGIE,
