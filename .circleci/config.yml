@@ -68,13 +68,9 @@ workflows:
               only:
                 - test_branch
 
-  test_all_code:
+  run_all_code:
     jobs:
-      - install_dependencies:
-          filters:
-            branches:
-              only:
-                - test_branch
+      - install_dependencies
       - ramav2:
           requires:
             - install_dependencies
