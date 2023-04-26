@@ -80,7 +80,7 @@ class SourceProcess:
             try:
                 wget.download(self.url[i], f"sources/{self.source}/{self.file_name[i]}.{self.format}")
             except:
-                print("Problème de téléchargement du fichier ", self.url[i])
+                logging.error("Problème de téléchargement du fichier ", self.url[i])
         logging.info(f"Téléchargement : {len(self.url)} fichier(s) OK")
 
     def convert(self):
@@ -102,7 +102,7 @@ class SourceProcess:
                 with open(file_path, "w") as file:
                     file.write(chaine)
             else:
-                print(f" Fichier {file_path} n existe pas.")
+                logging.warning(f" Fichier {file_path} n existe pas.")
         if count != len(self.url):
             logging.warning("Nombre de fichiers en local inégal au nombre d'url trouvé")
         logging.info(f"Début de convert: mise au format DataFrame de {self.source}")
@@ -138,7 +138,7 @@ class SourceProcess:
                         dico = json.load(json_file)
                         li.append(pd.DataFrame.from_dict(dico['marches']))
                 except:
-                    print(f" Le fichier {self.source} est introuvable")
+                    logging.warning(f" Le fichier {self.source} est introuvable")
             df = pd.concat(li)
             df = df.reset_index(drop=True)
             self.df = df
