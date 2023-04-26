@@ -72,8 +72,8 @@ workflows:
       - install_dependencies:
             filters:
                 branches:
-                only:
-                    - main
+                  only:
+                      - main
       - upload_saagie:
           requires:
             - install_dependencies
