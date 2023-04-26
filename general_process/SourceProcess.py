@@ -109,27 +109,25 @@ class SourceProcess:
         if self.format == 'xml':
             li = []
             for i in range(count):
-                try : 
+                try :
                     with open(
                             f"sources/{self.source}/{self.file_name[i]}.{self.format}", encoding="utf-8") as xml_file:
-                            dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
-                except : 
-                    with open(
-                            f"sources/{self.source}/{self.file_name[i]}.{self.format}", encoding="utf-8") as xml_file:
-                        specials_caracters = [""] # Liste de caractères spéciaux qui ne passe pas.
-                        print(f"Du fichier {self.file_name[i]} sont retirés à la main les caractères spéciaux empêchant sa lecture")
-                        str_file = xml_file.read()
-                        for special in specials_caracters:
-                            str_file = str_file.replace(special, "")
-                        dico = xmltodict.parse(str_file, dict_constructor=dict)
-                        print('Fichier correctement transformé')
-                if dico['marches'] is not None:
-                    df = pd.DataFrame.from_dict(dico['marches']['marche'])
-                else:
-                    logging.warning(f"Le fichier {self.file_name[i]} est vide, il est ignoré")
-                li.append(df)
-            df = pd.concat(li)
-            df = df.reset_index(drop=True)
+                        dico = xmltodict.parse(xml_file.read(), dict_constructor=dict)
+
+                    if dico['marches'] is not None:
+                        df = pd.DataFrame.from_dict(dico['marches']['marche'])
+                        li.append(df)
+                    else:  # cas presque nul
+                        logging.warning(f"Le fichier {self.file_name[i]} est vide, il est ignoré")
+                except:
+                    logging.error(f"Le fichier {self.file_name[i]} de la source {self.source}, n'est pas au format xml, il est ignoré")
+
+            if len(li) != 0:
+                df = pd.concat(li)
+                df = df.reset_index(drop=True)
+            else:
+                # create empty dataframe
+                df = pd.DataFrame()
             self.df = df
         elif self.format == 'json':
             li = []
