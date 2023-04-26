@@ -7,3 +7,4 @@
  dict2xml
  saagieapi
  boto3
+ requests

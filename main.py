@@ -26,6 +26,7 @@ def main():
     gp.drop_duplicate()
     gp.export()
     gp.upload_s3()
+    gp.upload_datagouv()
 
 
 if __name__ == "__main__":

@@ -6,6 +6,8 @@ from datetime import date
 import pickle
 import logging
 import boto3
+import requests
+
 
 class GlobalProcess:
     """La classe GlobalProcess est une classe qui définit les étapes de traitement une fois toutes
@@ -64,11 +66,11 @@ class GlobalProcess:
             return x
         def remove_titulaire_key_in_modif(x):
             """
-            Certains format de données retournent une dictionnaire de dictionnaire pour les modifications de titulaires, ce n'est pas le format de la V1.
+            Certains format de données retournent un dictionnaire de dictionnaire pour les modifications de titulaires, ce n'est pas le format de la V1.
             """
             x = x[0]
             x_dict = x['modification']
-            if type(x_dict) ==list: # Certains format sont des listes de 1 élément
+            if type(x_dict) ==list: # Certains formats sont des listes de 1 élément
                 x_dict = x_dict[0]
             if "titulaires" in x_dict.keys() :
                 if (type(x_dict['titulaires']) == dict) and ("titulaire" in x_dict['titulaires'].keys()) :
@@ -76,13 +78,11 @@ class GlobalProcess:
             return x
         logging.info("  ÉTAPE FIX ALL")
         logging.info("Début de l'étape Fix_all du DataFrame fusionné")
+
         # On met les acheteurs et lieux au bon format
-        for x in self.df['acheteur']:
-            if type(x) == dict and 'id' in x:
-                x['id'] = str(x['id'])
-        for x in self.df['lieuExecution']:
-            if type(x) == dict and 'code' in x:
-                x['code'] = str(x['code'])
+        self.df['acheteur.id'] = self.df['acheteur.id'].astype(str)
+        self.df['lieuExecution.code'] = self.df['lieuExecution.code'].astype(str)
+
         # Suppression des colonnes inutiles
         self.df = self.df.drop('dateTransmissionDonneesEtalab', axis=1)
         # Format des dates
@@ -104,11 +104,15 @@ class GlobalProcess:
         # Type de contrat qui s'étale sur deux colonnes, on combine les deux et garde _type qui est l'appelation dans Ramav1
         dict_mapping = {"MARCHE_PUBLIC": "Marché", "CONTRAT_DE_CONCESSION":"Contrat de concession"}
         bool_nan_type = self.df.loc[:, "_type"].isna()
-        self.df.loc[bool_nan_type, "_type"] = self.df.loc[bool_nan_type, "typeContrat"].map(dict_mapping)
-        cols_to_drop = ["typeContrat", "ReferenceAccordCadre"] # On supprime donc typeContrat est maintenant vide 
-        # ReferenceAccordCadre n'a que 6 valeurs non nuls sur 650k lignes et en plus cette colonne n'existe pas dans v1. Je supprime.
+        cols_to_drop = []
+        if "typeContrat" in self.df.columns:  # Dans le cas où typeContrat n'existe pas, on ne fait rien
+            self.df.loc[bool_nan_type, "_type"] = self.df.loc[bool_nan_type, "typeContrat"].map(dict_mapping)
+            cols_to_drop.append("typeContrat") # On supprime donc typeContrat qui est maintenant vide
+        if "ReferenceAccordCadre" in self.df.columns: # Dans le cas où ReferenceAccordCadre n'existe pas, on ne fait rien
+            cols_to_drop.append("ReferenceAccordCadre")
+        # ReferenceAccordCadre n'a que 6 valeurs non nul sur 650k lignes et en plus cette colonne n'existe pas dans v1.
         self.df = self.df.drop(cols_to_drop, axis=1)
-        #Si il y a des Nan dans modifications, on met une liste vide pour coller au format du v1
+        # S'il y a des Nan dans les modifications, on met une liste vide pour coller au format du v1
         mask_modifications_nan = self.df.loc[:, "modifications"].isnull()
         self.df.modifications.loc[mask_modifications_nan] = self.df.modifications.loc[mask_modifications_nan].apply(lambda x: [])
         # Gestion des multiples modifications  ===> C'est traité dans la partie gestion de la version flux. On va garder cette manière de faire, mais il faut une autre solution pour les unashable type.
@@ -137,7 +141,6 @@ class GlobalProcess:
         self.df = self.df.reset_index(drop=True)
         logging.info("Suppression OK")
         logging.info(f"Nombre de marchés dans Df après suppression des doublons strictes : {len(self.df)}")
-
 
     def export(self):
         """Étape exportation des résultats au format json et xml dans le dossier /results"""
@@ -190,7 +193,7 @@ class GlobalProcess:
         json_size = os.path.getsize(path_result)
         logging.info("Exportation JSON OK")
         logging.info(f"Taille de decpv2.json : {json_size}")
-    
+
     def upload_s3(self):
         """
         Cette fonction exporte decpv2 sur le S3 decp.
@@ -208,3 +211,28 @@ class GlobalProcess:
             endpoint_url="https://"+str(ENDPOINT_S3)
         )
         client.upload_file(os.path.join("results", "decpv2.json"), BUCKET_NAME, "data/decpv2.json")
+
+    def upload_datagouv(self):
+        """
+        Cette fonction exporte decpv2.json sur data.gouv.fr
+        """
+        # read info from config.son
+        with open("config.json", "r") as f:
+            config = json.load(f)
+            api = config["url_api"]
+            dataset_id = config["dataset_id"]
+            resource_id_json = config["resource_id_json"]
+
+        url = f"{api}/datasets/{dataset_id}/resources/{resource_id_json}/upload/"
+
+        headers = {
+            "X-API-KEY": os.environ.get("DATA_GOUV_API_KEY")
+        }
+
+        files = {
+            "file": (f"decpv2.json", open(f"results/decpv2.json", "rb"))
+        }
+
+        response = requests.post(url, headers=headers, files=files)
+
+        print(response.status_code)

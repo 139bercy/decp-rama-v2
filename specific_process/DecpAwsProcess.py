@@ -46,11 +46,21 @@ class DecpAwsProcess(SourceProcess):
         # Ca posait problèmes car les clefs des dictionnaires était en simple quote (') et pas (").
         # Alors je n'applique pas ces modifications pour lesquelles je en vois pas d'utilité partciulière actuellement
         # self.df = self.df.replace("\'", " ", regex=True)
-        dict_mapping = {"codecpv":"codeCPV", "type":"_type", "acheteur_id":"acheteur.id", "acheteur_nom":"acheteur.nom",
-        "datenotification": "dateNotification", "datepublicationdonnees": "datePublicationDonnees",
-        "lieuexecution_code": "lieuExecution.code", "lieuexecution_nom":"lieuExecution.nom", "lieuexecution_typecode": "lieuExecution.typeCode",
-        "formeprix": "formePrix", "dureemois":"dureeMois", "datetransmissiondonneesetalab":"dateTransmissionDonneesEtalab"}
+        dict_mapping = {"codecpv":"codeCPV",
+                        "type":"_type",
+                        "acheteur_id":"acheteur.id",
+                        "acheteur_nom":"acheteur.nom",
+                        "datenotification": "dateNotification",
+                        "datepublicationdonnees": "datePublicationDonnees",
+                        "lieuexecution_code": "lieuExecution.code",
+                        "lieuexecution_nom":"lieuExecution.nom",
+                        "lieuexecution_typecode": "lieuExecution.typeCode",
+                        "formeprix": "formePrix",
+                        "dureemois":"dureeMois",
+                        "datetransmissiondonneesetalab":"dateTransmissionDonneesEtalab"}
         self.df = self.df.rename(columns=dict_mapping)
+        # creation d'une nouvelle colonne dateDebutExecution avec des nan pour ne pas casser le process général
+        self.df["dateDebutExecution"] = None
     
     def fix(self):
         super().fix()
