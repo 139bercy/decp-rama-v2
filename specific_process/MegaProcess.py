@@ -22,6 +22,9 @@ class MegaProcess(SourceProcess):
         super().convert()
 
     def fix(self):
+        # if df is empty then return
+        if len(self.df) == 0:
+            return
         super().fix()
         self.df['titulaires'] = self.df['titulaires'].apply(
             lambda x: x if x is None or type(x) == list else [x])

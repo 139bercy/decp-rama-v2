@@ -32,6 +32,9 @@ class GlobalProcess:
         logging.info(f"Nombre de marchés dans le DataFrame fusionné après merge : {len(self.df)}")
 
     def fix_all(self):
+        # if df is empty then return
+        if len(self.df) == 0:
+            return
         """Étape fix all qui permet l'uniformisation du DataFrame."""
         def concat_modifications(dictionaries : list):
             """
@@ -124,6 +127,9 @@ class GlobalProcess:
         #self.df.loc[mask_modif, "modifications"] = self.df.loc[mask_modif, "modifications"].apply(remove_titulaire_key_in_modif)
 
     def drop_duplicate(self):
+        # if df is empty then return
+        if len(self.df) == 0:
+            return
         """L'Étape drop duplicate supprime les duplicats purs après avoir supprimé les espaces et
         convertis l'ensemble du DataFrame en string."""
         # Suppression des doublons
@@ -143,6 +149,9 @@ class GlobalProcess:
         logging.info(f"Nombre de marchés dans Df après suppression des doublons strictes : {len(self.df)}")
 
     def export(self):
+        # if df is empty then return
+        if len(self.df) == 0:
+            return
         """Étape exportation des résultats au format json et xml dans le dossier /results"""
         logging.info("  ÉTAPE EXPORTATION")
         logging.info("Début de l'étape Exportation en XML")
