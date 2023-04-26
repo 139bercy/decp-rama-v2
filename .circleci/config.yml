@@ -52,10 +52,28 @@ jobs:
             . venv/bin/activate
             python connect_saagie.py
 
+  test_urls:
+    docker:
+      - image: cimg/python:3.10.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}-{{ .Branch}}
+      - run:
+          name: Test des urls
+          command: |
+            . venv/bin/activate
+            python test_urls.py
+
 workflows:
   upload_saagie:
     jobs:
-      - install_dependencies
+      - install_dependencies:
+            filters:
+                branches:
+                only:
+                    - main
       - upload_saagie:
           requires:
             - install_dependencies
@@ -70,7 +88,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - test_branch
       - ramav2:
           requires:
             - install_dependencies
@@ -78,3 +96,10 @@ workflows:
             branches:
               only:
                 - test_branch
+
+  test_url:
+    jobs:
+      - install_dependencies
+      - test_urls:
+          requires:
+            - install_dependencies
