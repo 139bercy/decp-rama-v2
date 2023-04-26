@@ -192,7 +192,8 @@ class GlobalProcess:
         json_size = os.path.getsize(path_result)
         logging.info("Exportation JSON OK")
         logging.info(f"Taille de decpv2.json : {json_size}")
-    
+
+
     def upload_s3(self):
         """
         Cette fonction exporte decpv2 sur le S3 decp.
