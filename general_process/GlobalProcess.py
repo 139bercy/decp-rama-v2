@@ -216,9 +216,13 @@ class GlobalProcess:
         """
         Cette fonction exporte decpv2.json sur data.gouv.fr
         """
-        api = "https://www.data.gouv.fr/api/1"
-        dataset_id = "5cd57bf68b4c4179299eb0e9"
-        resource_id_json = "16962018-5c31-4296-9454-5998585496d2"
+        # read info from config.son
+        with open("config.json", "r") as f:
+            config = json.load(f)
+            api = config["url_api"]
+            dataset_id = config["dataset_id"]
+            resource_id_json = config["resource_id_json"]
+
         API_KEY = os.environ.get("DATA_GOUV_API_KEY")
 
         url = f"{api}/datasets/{dataset_id}/resources/{resource_id_json}/upload/"
