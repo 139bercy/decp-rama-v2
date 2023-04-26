@@ -34,6 +34,7 @@ class GlobalProcess:
     def fix_all(self):
         # if df is empty then return
         if len(self.df) == 0:
+            logging.warning("Le DataFrame est vide, pas de fix à faire.")
             return
         """Étape fix all qui permet l'uniformisation du DataFrame."""
         def concat_modifications(dictionaries : list):
@@ -129,7 +130,7 @@ class GlobalProcess:
     def drop_duplicate(self):
         # if df is empty then return
         if len(self.df) == 0:
-            logging.error(f"Le DataFrame est vide, impossible de supprimer les doublons, source : {self.source}")
+            logging.warning(f"Le DataFrame est vide, impossible de supprimer les doublons, source : {self.source}")
             return
         """L'Étape drop duplicate supprime les duplicats purs après avoir supprimé les espaces et
         convertis l'ensemble du DataFrame en string."""
@@ -152,6 +153,7 @@ class GlobalProcess:
     def export(self):
         # if df is empty then return
         if len(self.df) == 0:
+            logging.warning(f"Le DataFrame est vide, impossible d'exporter, source : {self.source}")
             return
         """Étape exportation des résultats au format json et xml dans le dossier /results"""
         logging.info("  ÉTAPE EXPORTATION")

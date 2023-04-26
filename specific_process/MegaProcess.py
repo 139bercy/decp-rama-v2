@@ -1,3 +1,5 @@
+import logging
+
 from general_process.SourceProcess import SourceProcess
 
 
@@ -24,6 +26,7 @@ class MegaProcess(SourceProcess):
     def fix(self):
         # if df is empty then return
         if len(self.df) == 0:
+            logging.warning(f"Le fichier {self.source} est vide, il est ignoré")
             return
         super().fix()
         self.df['titulaires'] = self.df['titulaires'].apply(
