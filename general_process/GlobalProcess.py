@@ -223,12 +223,10 @@ class GlobalProcess:
             dataset_id = config["dataset_id"]
             resource_id_json = config["resource_id_json"]
 
-        API_KEY = os.environ.get("DATA_GOUV_API_KEY")
-
         url = f"{api}/datasets/{dataset_id}/resources/{resource_id_json}/upload/"
 
         headers = {
-            "X-API-KEY": API_KEY
+            "X-API-KEY": os.environ.get("DATA_GOUV_API_KEY")
         }
 
         files = {
