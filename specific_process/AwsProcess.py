@@ -33,10 +33,7 @@ class AwsProcess(SourceProcess):
                     for i in range(len(modifications)):
                         if 'titulaires' in modification_dict[0]['modification'][i]:
                             modifs_titulaire = modification_dict[0]['modification'][i]['titulaires']
-                            if not modifs_titulaire : # Certains nouveaux formats de données renvoient des listes vides de modifs de titulaires.
-                                print("Liste titulaire vide pour l'entrée suivante : \n")
-                                print(modifications)
-                            else:
+                            if modifs_titulaire : # Certains nouveaux formats de données renvoient des listes vides de modifs de titulaires.
                                 modification_dict[0]['modification'][i]['titulaires'] = \
                                     ([modifications for modifications in modifs_titulaire]) if len(modifs_titulaire) > 1 else [modifs_titulaire[0]]
                 else:
