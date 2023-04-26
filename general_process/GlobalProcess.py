@@ -1,5 +1,4 @@
 import pandas as pd
-from dict2xml import dict2xml
 import json
 import os
 from datetime import date
@@ -37,49 +36,7 @@ class GlobalProcess:
             logging.warning("Le DataFrame est vide, pas de fix à faire.")
             return
         """Étape fix all qui permet l'uniformisation du DataFrame."""
-        def concat_modifications(dictionaries : list):
-            """
-            Parfois, certains marché ont plusieurs modifications (la colonne modification est une liste de dictionnaire).
-            Jusqu'alors, seul le premier élément de la liste (et donc la première modification) était pris en compte. 
-            Cette fonction met à jour le premier dictionnaire de la liste. Ainsi les modifications considérées par la suite seront bien les dernières.
 
-            Arguments
-            ------------
-            dictionnaries (list) liste des dictionnaires de modifications
-
-            Returns
-            ----------
-            Une liste d'un élément : le dictionnaire des modifications à considérer.
-
-            """
-            dict_original = dictionaries[0]
-            for dict in dictionaries: # C'st une boucle sur quelques éléments seulement, ça devrait pas poser trop de problèmes.
-                dict_original.update(dict)
-            return [dict_original]
-        def trans(x):
-            """
-            Cette fonction transforme correctement les modifications.
-            """
-            if len(x)>0:
-                x_ = x[0]['modification']
-                if type(x_)==list: # Certains format sont des listes d'un élement. Format rare mais qui casse tout.
-                    x_ = x_[0].copy()
-                if "titulaires" in x_.keys():
-                    if type(x_["titulaires"])==dict:
-                        x_['titulaires'] = x_['titulaires']['titulaire']
-            return x
-        def remove_titulaire_key_in_modif(x):
-            """
-            Certains format de données retournent un dictionnaire de dictionnaire pour les modifications de titulaires, ce n'est pas le format de la V1.
-            """
-            x = x[0]
-            x_dict = x['modification']
-            if type(x_dict) ==list: # Certains formats sont des listes de 1 élément
-                x_dict = x_dict[0]
-            if "titulaires" in x_dict.keys() :
-                if (type(x_dict['titulaires']) == dict) and ("titulaire" in x_dict['titulaires'].keys()) :
-                    x_dict['titulaires'] = x_dict['titulaires']['titulaire']
-            return x
         logging.info("  ÉTAPE FIX ALL")
         logging.info("Début de l'étape Fix_all du DataFrame fusionné")
 
