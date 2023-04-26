@@ -29,6 +29,8 @@ def main():
     files_to_add.append("metadata/metadata.json")
     # Puis main.py
     files_to_add.append("main.py")
+    # le fichier de config
+    files_to_add.append("config.json")
     # Et finalement les requirements
     files_to_add.append("requirements.txt")
 
