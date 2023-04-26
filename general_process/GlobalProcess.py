@@ -6,6 +6,8 @@ from datetime import date
 import pickle
 import logging
 import boto3
+import requests
+
 
 class GlobalProcess:
     """La classe GlobalProcess est une classe qui définit les étapes de traitement une fois toutes
@@ -140,7 +142,6 @@ class GlobalProcess:
         logging.info("Suppression OK")
         logging.info(f"Nombre de marchés dans Df après suppression des doublons strictes : {len(self.df)}")
 
-
     def export(self):
         """Étape exportation des résultats au format json et xml dans le dossier /results"""
         logging.info("  ÉTAPE EXPORTATION")
@@ -193,7 +194,6 @@ class GlobalProcess:
         logging.info("Exportation JSON OK")
         logging.info(f"Taille de decpv2.json : {json_size}")
 
-
     def upload_s3(self):
         """
         Cette fonction exporte decpv2 sur le S3 decp.
@@ -211,3 +211,26 @@ class GlobalProcess:
             endpoint_url="https://"+str(ENDPOINT_S3)
         )
         client.upload_file(os.path.join("results", "decpv2.json"), BUCKET_NAME, "data/decpv2.json")
+
+    def upload_datagouv(self):
+        """
+        Cette fonction exporte decpv2.json sur data.gouv.fr
+        """
+        api = "https://www.data.gouv.fr/api/1"
+        dataset_id = "5cd57bf68b4c4179299eb0e9"
+        resource_id_json = "16962018-5c31-4296-9454-5998585496d2"
+        API_KEY = os.environ.get("DATA_GOUV_API_KEY")
+
+        url = f"{api}/datasets/{dataset_id}/resources/{resource_id_json}/upload/"
+
+        headers = {
+            "X-API-KEY": API_KEY
+        }
+
+        files = {
+            "file": (f"decpv2.json", open(f"results/decpv2.json", "rb"))
+        }
+
+        response = requests.post(url, headers=headers, files=files)
+
+        print(response.status_code)
