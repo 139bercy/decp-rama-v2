@@ -129,6 +129,7 @@ class GlobalProcess:
     def drop_duplicate(self):
         # if df is empty then return
         if len(self.df) == 0:
+            logging.error(f"Le DataFrame est vide, impossible de supprimer les doublons, source : {self.source}")
             return
         """L'Étape drop duplicate supprime les duplicats purs après avoir supprimé les espaces et
         convertis l'ensemble du DataFrame en string."""
